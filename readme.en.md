@@ -69,9 +69,13 @@ This project is developed using modern and robust technologies. The application 
 
 ## Additional Documents 📸📹📊
 
-- **Architecture Diagram:** [Arch.png](./docs/Arch.png)
-- **ER Diagram:** [ER\_Diagram.png](./docs/ER_Diagram.png)
-- **Usage Video:** [Usage Video](./docs/usage-video.mp4) 🎥📄📊
+- **Architecture Diagram:**
+  <br/>
+  <img src="https://github.com/tahapek5454/Self-Waiter/blob/main/docs/Self-Waiter_Arch-Diagram.drawio.png" alt="Arch.png" style="width:80%;">
+- **ER Diagram:**
+    <br/>
+  <img src="https://github.com/tahapek5454/Self-Waiter/blob/main/docs/Self-Waiter_ER-Diagram.drawio.png" alt="ER.png" style="width:90%;">
+- **Usage Video:** Coming soon
 
 ## Contributing 🤝💪👨‍🍳
 
