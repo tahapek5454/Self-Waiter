@@ -68,10 +68,13 @@ Bu proje, modern ve güçlü teknolojiler kullanılarak geliştirilmiştir. Uygu
 5. Siparişi kendiniz alabilir ya da masaya servis isteyebilirsiniz. 🚀📢📡
 
 ## Ek Dökümanlar 📸📹📊
-
-- **Mimari Diyagram:** [Arch.png](./docs/Arch.png)
-- **ER Diyagramı:** [ER\_Diagram.png]()
-- **Kullanım Videosu:** [Kullanım Videosu](./docs/usage-video.mp4) 🎥📄📊
+- **Mimari Diyagram:**
+  <br/>
+  <img src="https://github.com/tahapek5454/Self-Waiter/blob/main/docs/Self-Waiter_Arch-Diagram.drawio.png" alt="Arch.png" style="width:80%;">
+- **ER Diyagramı:**
+  <br/>
+  <img src="https://github.com/tahapek5454/Self-Waiter/blob/main/docs/Self-Waiter_ER-Diagram.drawio.png" alt="ER.png" style="width:90%;">
+- **Kullanım Videosu:** İlerleyen tarihlerde görülebilir olacaktır.
 
 ## Katkıda Bulunma 🤝💪👨‍🍳
 
