@@ -8,7 +8,7 @@ namespace SelfWaiter.Shared.Core.Application.Services
     {
         Task<List<T>> GetAllAsync(bool tracking = true);
         Task<T> GetByIdAsync(int id, bool tracking = true);
-        Task<IQueryable<T>> WhereAsync(Expression<Func<D, bool>> exp);
+        IQueryable<T> Where(Expression<Func<D, bool>> exp);
         Task<T> FirstOrDefaultAsync(Expression<Func<D, bool>> exp, bool tracking = true);
         bool AnyAsync(Expression<Func<D, bool>> exp);
 
