@@ -1,4 +1,4 @@
-﻿namespace SelfWaiter.Shared.Core.Entities;
+﻿namespace SelfWaiter.Shared.Core.Domain.Entities;
 
 public interface IEntity
 {

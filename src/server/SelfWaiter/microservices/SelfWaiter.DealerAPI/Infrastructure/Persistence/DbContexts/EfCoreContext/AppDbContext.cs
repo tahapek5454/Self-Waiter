@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SelfWaiter.DealerAPI.Core.Domain.Entities;
-using SelfWaiter.Shared.Core.Entities;
+using SelfWaiter.Shared.Core.Domain.Entities;
 using System.Reflection;
 
 namespace SelfWaiter.DealerAPI.Infrastructure.Persistence.DbContexts.EfCoreContext

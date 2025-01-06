@@ -1,4 +1,4 @@
-﻿using SelfWaiter.Shared.Core.Entities;
+﻿using SelfWaiter.Shared.Core.Domain.Entities;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SelfWaiter.DealerAPI.Core.Domain.Entities
