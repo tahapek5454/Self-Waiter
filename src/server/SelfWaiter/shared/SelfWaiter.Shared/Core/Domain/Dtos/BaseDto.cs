@@ -1,6 +1,6 @@
-﻿namespace SelfWaiter.DealerAPI.Core.Application.Dtos
+﻿namespace SelfWaiter.Shared.Core.Domain.Dtos
 {
-    public class BaseDto
+    public class BaseDto : IDto
     {
         public virtual Guid Id { get; set; }
         public virtual DateTime CreatedDate { get; set; }

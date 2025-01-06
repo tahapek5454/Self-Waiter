@@ -1,6 +1,8 @@
-﻿namespace SelfWaiter.DealerAPI.Core.Application.Dtos
+﻿using SelfWaiter.Shared.Core.Domain.Dtos;
+
+namespace SelfWaiter.DealerAPI.Core.Application.Dtos
 {
-    public class DealerDto
+    public class DealerDto: BaseDto
     {
         public string Name { get; set; }
         public string? Adress { get; set; }

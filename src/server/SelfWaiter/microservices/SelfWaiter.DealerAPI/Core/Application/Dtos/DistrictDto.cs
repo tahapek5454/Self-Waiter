@@ -1,6 +1,8 @@
-﻿namespace SelfWaiter.DealerAPI.Core.Application.Dtos
+﻿using SelfWaiter.Shared.Core.Domain.Dtos;
+
+namespace SelfWaiter.DealerAPI.Core.Application.Dtos
 {
-    public class DistrictDto
+    public class DistrictDto: BaseDto
     {
         public string Name { get; set; }
         public Guid CityId { get; set; }
