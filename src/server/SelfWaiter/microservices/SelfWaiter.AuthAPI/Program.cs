@@ -32,7 +32,7 @@ if (app.Environment.IsDevelopment())
         optinos
         .WithTitle("Self Waiter Auth")
         .WithTheme(ScalarTheme.Mars)
-        .WithDefaultHttpClient(ScalarTarget.Node, ScalarClient.Axios);
+        .WithDefaultHttpClient(ScalarTarget.JavaScript, ScalarClient.Axios);
     });
 }
 
