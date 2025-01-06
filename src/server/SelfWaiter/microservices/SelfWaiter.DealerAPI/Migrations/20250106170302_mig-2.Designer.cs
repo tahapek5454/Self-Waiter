@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SelfWaiter.DealerAPI.Infrastructure.Persistence.DbContexts.EfCoreContext;
 
@@ -11,9 +12,11 @@ using SelfWaiter.DealerAPI.Infrastructure.Persistence.DbContexts.EfCoreContext;
 namespace SelfWaiter.DealerAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250106170302_mig-2")]
+    partial class mig2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -148,15 +151,6 @@ namespace SelfWaiter.DealerAPI.Migrations
                     b.HasIndex("CityId");
 
                     b.ToTable("Districts");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("24818128-6c4e-453d-8a1f-15f75e8aa746"),
-                            CityId = new Guid("7333d5e7-ae6a-4523-88ac-7383c9a9f6a5"),
-                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Serdivan"
-                        });
                 });
 
             modelBuilder.Entity("SelfWaiter.DealerAPI.Core.Domain.Entities.UserProfile", b =>

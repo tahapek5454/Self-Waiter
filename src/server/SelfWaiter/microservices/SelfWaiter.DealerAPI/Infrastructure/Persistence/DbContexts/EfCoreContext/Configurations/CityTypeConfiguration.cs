@@ -15,11 +15,27 @@ namespace SelfWaiter.DealerAPI.Infrastructure.Persistence.DbContexts.EfCoreConte
 
             builder.Property(x => x.Name)
                 .HasMaxLength(80);
+
+            builder.HasData(SeedDatas());
         }
 
         private IEnumerable<City> SeedDatas()
         {
-            yield break;
+            var cities = new List<City>()
+            {
+                new()
+                {
+                    CountryId = new Guid("00000000-0000-0000-0000-000000000001"),
+                    CreatedDate = new DateTime(2025,01,01),
+                    CreatorUserName = "tahapek",
+                    Id = new Guid("7333d5e7-ae6a-4523-88ac-7383c9a9f6a5"),
+                    Name = "Sakarya", 
+                }
+            };
+            
+
+
+            return cities;
         }
     }
 
