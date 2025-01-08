@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using SelfWaiter.DealerAPI.Core.Application.Dtos;
 using SelfWaiter.DealerAPI.Core.Domain.Entities;
+using SelfWaiter.Shared.Core.Domain.Dtos;
+using SelfWaiter.Shared.Core.Domain.Entities;
 
 namespace SelfWaiter.DealerAPI.Core.Application.Mapper
 {
@@ -38,6 +40,10 @@ namespace SelfWaiter.DealerAPI.Core.Application.Mapper
 
             CreateMap<UserProfile, UserProfileDto>();
 
+            #endregion
+
+            #region Base
+            CreateMap<IEntity, IDto>().ReverseMap();
             #endregion
         }
     }

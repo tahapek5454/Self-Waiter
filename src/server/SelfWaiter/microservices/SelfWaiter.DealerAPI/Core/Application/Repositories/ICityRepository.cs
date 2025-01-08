@@ -6,6 +6,6 @@ namespace SelfWaiter.DealerAPI.Core.Application.Repositories
 {
     public interface ICityRepository: IBaseRepository<City>
     {
-        public DbSet<City> Table { get; init; }
+        public DbSet<City> Table { get; }
     }
 }

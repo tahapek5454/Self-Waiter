@@ -6,6 +6,6 @@ namespace SelfWaiter.DealerAPI.Core.Application.Repositories
 {
     public interface IUserProfileRepository: IBaseRepository<UserProfile>
     {
-        public DbSet<UserProfile> Table { get; init; }
+        public DbSet<UserProfile> Table { get; }
     }
 }
