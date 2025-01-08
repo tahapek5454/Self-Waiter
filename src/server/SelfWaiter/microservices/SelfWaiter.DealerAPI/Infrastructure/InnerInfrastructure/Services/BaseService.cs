@@ -46,7 +46,7 @@ namespace SelfWaiter.DealerAPI.Infrastructure.InnerInfrastructure.Services
             return dtos;
         }
 
-        public async Task<T> GetByIdAsync(Guid id, bool tracking = true)
+        public async Task<T?> GetByIdAsync(Guid id, bool tracking = true)
         {
             var entity = await _baseRepository.GetByIdAsync(id, tracking);
 
