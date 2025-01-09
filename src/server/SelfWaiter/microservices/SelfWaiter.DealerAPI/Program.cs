@@ -1,8 +1,19 @@
 using Microsoft.EntityFrameworkCore;
+using Scalar.AspNetCore;
 using SelfWaiter.DealerAPI;
 using SelfWaiter.DealerAPI.Infrastructure.Persistence.DbContexts.EfCoreContext;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy",
+        builder => builder.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+           );
+});
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
@@ -19,7 +30,18 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+
+    app.MapScalarApiReference(optinos =>
+    {
+        // auth opeartion will be added
+        optinos
+        .WithTitle("Self Waiter Dealer")
+        .WithTheme(ScalarTheme.Mars)
+        .WithDefaultHttpClient(ScalarTarget.JavaScript, ScalarClient.Axios);
+    });
 }
+
+app.UseCors("CorsPolicy");
 
 app.UseHttpsRedirection();
 

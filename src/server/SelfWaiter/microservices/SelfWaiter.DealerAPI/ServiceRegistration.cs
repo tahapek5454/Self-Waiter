@@ -1,12 +1,10 @@
-﻿using MediatR;
-using System.Reflection;
+﻿using System.Reflection;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SelfWaiter.DealerAPI.Core.Application.Behaviors;
-using SelfWaiter.DealerAPI.Infrastructure.Persistence.DbContexts.EfCoreContext;
 using SelfWaiter.DealerAPI.Core.Application.Repositories;
+using SelfWaiter.DealerAPI.Infrastructure.Persistence.DbContexts.EfCoreContext;
 using SelfWaiter.DealerAPI.Infrastructure.Persistence.Repositories;
-using SelfWaiter.DealerAPI.Core.Application.Services;
-using SelfWaiter.DealerAPI.Infrastructure.InnerInfrastructure.Services;
 
 namespace SelfWaiter.DealerAPI
 {
@@ -36,14 +34,7 @@ namespace SelfWaiter.DealerAPI
             services.AddScoped<IDealerRepository, DealerRepository>();
             services.AddScoped<IDistrictRepository, DistrictRepository>();
             services.AddScoped<IUserProfileRepository, UserProfileRepository>();
-            #endregion
-
-            #region Services
-            services.AddScoped<ICityService, CityService>();
-            services.AddScoped<ICountryService, CountryService>();
-            services.AddScoped<IDealerService, DealerService>();
-            services.AddScoped<IDistrictService, DistrictService>();
-            services.AddScoped<IUserProfileService, UserProfileService>();
+            services.AddScoped<IDealerUnitOfWork, DealerUnitOfWork>();
             #endregion
 
             return services;

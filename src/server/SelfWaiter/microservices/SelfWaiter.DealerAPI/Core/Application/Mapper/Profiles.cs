@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using SelfWaiter.DealerAPI.Core.Application.Dtos;
+using SelfWaiter.DealerAPI.Core.Application.Features.Commands.CityCommands;
+using SelfWaiter.DealerAPI.Core.Application.Features.Commands.CountryCommands;
 using SelfWaiter.DealerAPI.Core.Domain.Entities;
-using SelfWaiter.Shared.Core.Domain.Dtos;
-using SelfWaiter.Shared.Core.Domain.Entities;
 
 namespace SelfWaiter.DealerAPI.Core.Application.Mapper
 {
@@ -12,13 +12,15 @@ namespace SelfWaiter.DealerAPI.Core.Application.Mapper
         {
             #region City
 
-            CreateMap<City, CityDto>();
+            CreateMap<City, CityDto>().ReverseMap();
+            CreateMap<CreateCityCommand, City>();
 
             #endregion
 
             #region Country
 
             CreateMap<Country, CountryDto>();
+            CreateMap<CreateCountryCommand, Country>();
 
             #endregion
 
@@ -42,9 +44,6 @@ namespace SelfWaiter.DealerAPI.Core.Application.Mapper
 
             #endregion
 
-            #region Base
-            CreateMap<IEntity, IDto>().ReverseMap();
-            #endregion
         }
     }
 }
