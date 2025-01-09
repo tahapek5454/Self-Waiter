@@ -19,11 +19,24 @@ namespace SelfWaiter.DealerAPI.Infrastructure.Persistence.Repositories
             await _appDbContext.Set<T>().AddAsync(entity);
         }
 
+        public async Task CreateRangeAsync(IEnumerable<T> entities)
+        {
+            await _appDbContext.Set<T>().AddRangeAsync(entities);
+        }
+
         public Task DeleteAsync(T entity)
         {
             return Task.Run(() =>
             {
                 _appDbContext.Set<T>().Remove(entity);
+            });
+        }
+
+        public Task DeleteRangeAsync(IEnumerable<T> entities)
+        {
+            return Task.Run(() =>
+            {
+                _appDbContext.Set<T>().RemoveRange(entities);
             });
         }
 

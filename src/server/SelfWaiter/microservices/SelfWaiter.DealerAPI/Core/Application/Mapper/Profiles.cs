@@ -21,6 +21,7 @@ namespace SelfWaiter.DealerAPI.Core.Application.Mapper
 
             CreateMap<Country, CountryDto>();
             CreateMap<CreateCountryCommand, Country>();
+            CreateMap<UpdateCountryCommand, Country>();
 
             #endregion
 

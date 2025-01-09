@@ -13,7 +13,9 @@ namespace SelfWaiter.Shared.Core.Application.Repositories
         Task<bool> AnyAsync(Expression<Func<T, bool>> exp);
 
         Task CreateAsync(T entity);
+        Task CreateRangeAsync(IEnumerable<T> entities);
         Task UpdateAsync(T entity);
         Task DeleteAsync(T entity);
+        Task DeleteRangeAsync(IEnumerable<T> entities);
     }
 }
