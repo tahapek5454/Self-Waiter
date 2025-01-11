@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SelfWaiter.DealerAPI.Core.Application.Features.Commands.CountryCommands;
 using SelfWaiter.DealerAPI.Core.Application.Features.Queries.CountryQueries;
 using SelfWaiter.DealerAPI.Core.Application.Repositories;
+using SelfWaiter.Shared.Core.Domain.Dtos;
 
 namespace SelfWaiter.DealerAPI.Presentation.Controllers
 {
@@ -24,8 +25,10 @@ namespace SelfWaiter.DealerAPI.Presentation.Controllers
 
         #region Queries
         [HttpPost]
-        public async Task<IActionResult> GetCountries([FromQuery] GetCountriesQuery request)
+        public async Task<IActionResult> GetCountries([FromQuery] GetCountriesQuery request, [FromBody] DynamicRequest? dynamicRequest)
         {
+            request.DynamicRequest = dynamicRequest;
+
             var r = await _mediator.Send(request);
 
             return Ok(r);
