@@ -5,15 +5,15 @@ using SelfWaiter.Shared.Core.Application.Utilities.Consts;
 
 namespace SelfWaiter.DealerAPI.Core.Application.Features.Commands.CountryCommands
 {
-    public class DeleteRangeCountryCommand: IRequest<int>
+    public class DeleteRangeCountryCommand: IRequest<bool>
     {
         public IEnumerable<Guid> Ids { get; set; }
 
-        public class DeleteRangeCountryCommandHandler(ICountryRepository _countryRepository, IDealerUnitOfWork _dealerUnitOfWork) : IRequestHandler<DeleteRangeCountryCommand, int>
+        public class DeleteRangeCountryCommandHandler(ICountryRepository _countryRepository, IDealerUnitOfWork _dealerUnitOfWork) : IRequestHandler<DeleteRangeCountryCommand, bool>
         {
-            public async Task<int> Handle(DeleteRangeCountryCommand request, CancellationToken cancellationToken)
+            public async Task<bool> Handle(DeleteRangeCountryCommand request, CancellationToken cancellationToken)
             {
-                if (request.Ids is null || !request.Ids.Any()) return 0;
+                if (request.Ids is null || !request.Ids.Any()) return false;
 
 
                 var entities = _countryRepository.Where(x => request.Ids.Contains(x.Id));
@@ -23,7 +23,7 @@ namespace SelfWaiter.DealerAPI.Core.Application.Features.Commands.CountryCommand
 
                 await _countryRepository.DeleteRangeAsync(entities);
 
-                return await _dealerUnitOfWork.SaveChangesAsync();
+                return true;
             }
         }
     }

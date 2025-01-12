@@ -5,19 +5,19 @@ using SelfWaiter.DealerAPI.Core.Domain.Entities;
 
 namespace SelfWaiter.DealerAPI.Core.Application.Features.Commands.CountryCommands
 {
-    public class UpdateCountryCommand: IRequest<int>
+    public class UpdateCountryCommand: IRequest<bool>
     {
         public string? Name { get; set; }
 
-        public class UpdateCountryCommandHandler(ICountryRepository _countryRepository, IDealerUnitOfWork _dealerUnitOfWork) : IRequestHandler<UpdateCountryCommand, int>
+        public class UpdateCountryCommandHandler(ICountryRepository _countryRepository, IDealerUnitOfWork _dealerUnitOfWork) : IRequestHandler<UpdateCountryCommand, bool>
         {
-            public async Task<int> Handle(UpdateCountryCommand request, CancellationToken cancellationToken)
+            public async Task<bool> Handle(UpdateCountryCommand request, CancellationToken cancellationToken)
             {
                 var entity = ObjectMapper.Mapper.Map<Country>(request);
 
                 await _countryRepository.UpdateAsync(entity);
 
-                return await _dealerUnitOfWork.SaveChangesAsync();
+                return true;
             }
         }
     }

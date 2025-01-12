@@ -23,9 +23,9 @@ namespace SelfWaiter.DealerAPI
             services.AddMediatR(configuration =>
             {
                 configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+                configuration.AddOpenBehavior(typeof(BeforeHandlerBehavior<,>));
+                configuration.AddOpenBehavior(typeof(AfterHandlerBehavior<,>));
             });
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(BeforeHandlerBehavior<,>));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AfterHandlerBehavior<,>));
             #endregion
 
             #region Repositories

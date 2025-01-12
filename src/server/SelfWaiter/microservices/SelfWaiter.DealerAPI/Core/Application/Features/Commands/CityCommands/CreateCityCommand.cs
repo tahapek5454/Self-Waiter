@@ -5,20 +5,20 @@ using SelfWaiter.DealerAPI.Core.Domain.Entities;
 
 namespace SelfWaiter.DealerAPI.Core.Application.Features.Commands.CityCommands
 {
-    public class CreateCityCommand: IRequest<int>
+    public class CreateCityCommand: IRequest<bool>
     {
         public string Name { get; set; }
         public Guid CountryId { get; set; }
 
-        public class CreateCityCommandHandler(ICityRepository _cityRepository, IDealerUnitOfWork _dealerUnitOfWork) : IRequestHandler<CreateCityCommand, int>
+        public class CreateCityCommandHandler(ICityRepository _cityRepository) : IRequestHandler<CreateCityCommand, bool>
         {
-            public async Task<int> Handle(CreateCityCommand request, CancellationToken cancellationToken)
+            public async Task<bool> Handle(CreateCityCommand request, CancellationToken cancellationToken)
             {
                 var city = ObjectMapper.Mapper.Map<City>(request);
 
                 await _cityRepository.CreateAsync(city);
 
-                return await _dealerUnitOfWork.SaveChangesAsync();
+                return true;
             }
         }
     }

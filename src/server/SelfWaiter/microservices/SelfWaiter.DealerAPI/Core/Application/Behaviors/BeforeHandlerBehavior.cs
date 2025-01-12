@@ -1,5 +1,4 @@
-﻿using Azure;
-using MediatR;
+﻿using MediatR;
 
 namespace SelfWaiter.DealerAPI.Core.Application.Behaviors
 {

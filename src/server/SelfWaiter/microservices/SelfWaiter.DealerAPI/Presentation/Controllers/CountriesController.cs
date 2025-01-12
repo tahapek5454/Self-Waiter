@@ -16,9 +16,9 @@ namespace SelfWaiter.DealerAPI.Presentation.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateCountry([FromBody] CreateCountryCommand request)
         {
-            var r = await _mediator.Send(request);
+            await _mediator.Send(request);
 
-            return Ok(r);
+            return Created();
         }
 
         #endregion
