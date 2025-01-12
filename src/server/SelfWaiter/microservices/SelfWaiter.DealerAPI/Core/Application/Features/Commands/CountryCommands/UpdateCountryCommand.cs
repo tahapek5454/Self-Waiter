@@ -7,6 +7,7 @@ namespace SelfWaiter.DealerAPI.Core.Application.Features.Commands.CountryCommand
 {
     public class UpdateCountryCommand: IRequest<bool>
     {
+        public Guid Id { get; set; }
         public string? Name { get; set; }
 
         public class UpdateCountryCommandHandler(ICountryRepository _countryRepository, IDealerUnitOfWork _dealerUnitOfWork) : IRequestHandler<UpdateCountryCommand, bool>

@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using MediatR;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using SelfWaiter.DealerAPI.Core.Application.Behaviors;
 using SelfWaiter.DealerAPI.Core.Application.Repositories;
@@ -37,6 +37,9 @@ namespace SelfWaiter.DealerAPI
             services.AddScoped<IDealerUnitOfWork, DealerUnitOfWork>();
             #endregion
 
+            #region Validation
+            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            #endregion
             return services;
         }
     }
