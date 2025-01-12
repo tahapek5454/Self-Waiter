@@ -26,7 +26,7 @@ namespace SelfWaiter.DealerAPI.Core.Application.Behaviors
 
             if(errors?.Any() ?? false)
             {
-                _logger.LogInformation("before handler - request started {requestName} before handle validator", requestName);
+                _logger.LogInformation("before handler - request started {requestName} after handle validator, has validation exception or exceptions", requestName);
 
                 throw new SelfWaiterValidationException(errors);
             }
