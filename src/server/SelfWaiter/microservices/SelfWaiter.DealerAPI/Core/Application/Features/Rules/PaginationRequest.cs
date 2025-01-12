@@ -5,6 +5,8 @@ namespace SelfWaiter.DealerAPI.Core.Application.Features.Rules
 {
     public class PaginationRequest<T>(int page, int size) : PaginationRequest(page, size), IRequest<T>
     {
+        public DynamicRequest? DynamicRequest { get; set; }
+
         public PaginationRequest():this(1,10)
         {
             

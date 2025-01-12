@@ -8,10 +8,8 @@ using SelfWaiter.Shared.Core.Domain.Dtos;
 
 namespace SelfWaiter.DealerAPI.Core.Application.Features.Queries.CountryQueries
 {
-    public class GetCountriesQuery: PaginationRequest<PaginationResult<CountryDto>>
+    public class GetCountriesQuery: DynamicRequest<PaginationResult<CountryDto>>
     {
-        public DynamicRequest? DynamicRequest { get; set; }
-
         public class GetCountriesQueryHandler(ICountryRepository _countryRepository) : IRequestHandler<GetCountriesQuery, PaginationResult<CountryDto>>
         {
             public async Task<PaginationResult<CountryDto>> Handle(GetCountriesQuery request, CancellationToken cancellationToken)
