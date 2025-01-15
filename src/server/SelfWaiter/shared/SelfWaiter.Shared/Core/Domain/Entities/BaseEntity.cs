@@ -7,5 +7,6 @@ public abstract class BaseEntity : IEntity
     public virtual string? CreatorUserName { get; set; }
     public virtual DateTime? UpdatedDate { get; set; }
     public virtual string? UpdatetorUserName { get; set; }
+    public bool IsValid { get; set; } = true;
 }
 

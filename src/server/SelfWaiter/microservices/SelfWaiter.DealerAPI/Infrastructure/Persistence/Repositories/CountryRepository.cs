@@ -7,6 +7,6 @@ namespace SelfWaiter.DealerAPI.Infrastructure.Persistence.Repositories
 {
     public class CountryRepository(AppDbContext _appDbContext) : BaseRepository<Country>(_appDbContext), ICountryRepository
     {
-        public DbSet<Country> Table { get => _appDbContext.Set<Country>(); }
+        public DbSet<Country> Table { get => _appDbContext.Set<Country>(); }    
     }
 }

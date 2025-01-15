@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using SelfWaiter.DealerAPI.Infrastructure.Persistence.DbContexts.EfCoreContext;
+using SelfWaiter.Shared.Core.Application.Extension;
 using SelfWaiter.Shared.Core.Application.Repositories;
 using SelfWaiter.Shared.Core.Domain.Entities;
 
@@ -26,18 +27,15 @@ namespace SelfWaiter.DealerAPI.Infrastructure.Persistence.Repositories
 
         public Task DeleteAsync(T entity)
         {
-            return Task.Run(() =>
-            {
-                _appDbContext.Set<T>().Remove(entity);
-            });
+            entity.IsValid = false;
+
+            return Task.CompletedTask;
         }
 
-        public Task DeleteRangeAsync(IEnumerable<T> entities)
+        public  Task DeleteRangeAsync(IEnumerable<T> entities)
         {
-            return Task.Run(() =>
-            {
-                _appDbContext.Set<T>().RemoveRange(entities);
-            });
+            entities.Foreach(x =>x.IsValid=false);
+            return Task.CompletedTask;
         }
 
         public async Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> exp, bool tracking = true)
