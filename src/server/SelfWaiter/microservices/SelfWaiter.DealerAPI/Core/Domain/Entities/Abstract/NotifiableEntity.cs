@@ -5,7 +5,7 @@ namespace SelfWaiter.DealerAPI.Core.Domain.Entities.Abstract
 {
     public abstract class NotifiableEntity : BaseEntity
     {
-        protected IEnumerable<INotification>? _domainEvents;
+        protected List<INotification>? _domainEvents;
 
         public int ClearDomainEvents()
         {
@@ -14,7 +14,8 @@ namespace SelfWaiter.DealerAPI.Core.Domain.Entities.Abstract
 
             int quantity = _domainEvents.Count();
 
-            _domainEvents = Enumerable.Empty<INotification>();
+            _domainEvents = Enumerable.Empty<INotification>()
+                                      .ToList();
 
             return quantity;
         }
@@ -22,7 +23,7 @@ namespace SelfWaiter.DealerAPI.Core.Domain.Entities.Abstract
         public void AddDomainEvent(INotification domainEvent)
         {
             _domainEvents ??= new List<INotification>();
-            _domainEvents.Append(domainEvent);
+            _domainEvents.Add(domainEvent);
         }
 
         public IEnumerable<INotification> GetDomainEvents()

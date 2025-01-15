@@ -1,8 +1,8 @@
-﻿using SelfWaiter.Shared.Core.Domain.Entities;
+﻿using SelfWaiter.DealerAPI.Core.Domain.Entities.Abstract;
 
 namespace SelfWaiter.DealerAPI.Core.Domain.Entities
 {
-    public class UserProfileAndDealer: BaseEntity
+    public class UserProfileAndDealer: NotifiableEntity
     {
         public Guid DealerId { get; set; }
         public virtual Dealer Dealer { get; set; }

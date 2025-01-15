@@ -1,8 +1,8 @@
-﻿using SelfWaiter.Shared.Core.Domain.Entities;
+﻿using SelfWaiter.DealerAPI.Core.Domain.Entities.Abstract;
 
 namespace SelfWaiter.DealerAPI.Core.Domain.Entities
 {
-    public class Dealer: BaseEntity
+    public class Dealer: NotifiableEntity
     {
         public string Name { get; set; }
         public string? Adress { get; set; }

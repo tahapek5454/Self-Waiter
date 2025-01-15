@@ -1,9 +1,9 @@
-﻿using SelfWaiter.Shared.Core.Domain.Entities;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using SelfWaiter.DealerAPI.Core.Domain.Entities.Abstract;
 
 namespace SelfWaiter.DealerAPI.Core.Domain.Entities
 {
-    public class District: BaseEntity
+    public class District: NotifiableEntity
     {
         public string Name { get; set; }
         public Guid CityId { get; set; }

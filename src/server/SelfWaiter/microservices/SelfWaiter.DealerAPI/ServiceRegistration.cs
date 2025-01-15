@@ -2,6 +2,7 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using SelfWaiter.DealerAPI.Core.Application.Behaviors;
+using SelfWaiter.DealerAPI.Core.Application.Behaviors.Dispatchers;
 using SelfWaiter.DealerAPI.Core.Application.Repositories;
 using SelfWaiter.DealerAPI.Infrastructure.Persistence.DbContexts.EfCoreContext;
 using SelfWaiter.DealerAPI.Infrastructure.Persistence.Repositories;
@@ -26,6 +27,7 @@ namespace SelfWaiter.DealerAPI
                 configuration.AddOpenBehavior(typeof(BeforeHandlerBehavior<,>));
                 configuration.AddOpenBehavior(typeof(AfterHandlerBehavior<,>));
             });
+            services.AddScoped<IDomainEventsDispatcher,  DomainEventsDispatcher>();
             #endregion
 
             #region Repositories

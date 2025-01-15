@@ -1,8 +1,8 @@
-﻿using SelfWaiter.Shared.Core.Domain.Entities;
+﻿using SelfWaiter.DealerAPI.Core.Domain.Entities.Abstract;
 
 namespace SelfWaiter.DealerAPI.Core.Domain.Entities
 {
-    public class UserProfile: BaseEntity
+    public class UserProfile: NotifiableEntity
     {
         public string UserName { get; set; }
         public string Name { get; set; }
