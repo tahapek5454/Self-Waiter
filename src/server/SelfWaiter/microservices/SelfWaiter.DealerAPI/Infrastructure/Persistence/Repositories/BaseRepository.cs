@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using SelfWaiter.DealerAPI.Infrastructure.Persistence.DbContexts.EfCoreContext;
 using SelfWaiter.Shared.Core.Application.Extension;
@@ -28,13 +29,14 @@ namespace SelfWaiter.DealerAPI.Infrastructure.Persistence.Repositories
         public Task DeleteAsync(T entity)
         {
             entity.IsValid = false;
-
+            _appDbContext.Set<T>().Update(entity);
             return Task.CompletedTask;
         }
 
         public  Task DeleteRangeAsync(IEnumerable<T> entities)
         {
             entities.Foreach(x =>x.IsValid=false);
+            _appDbContext.Set<T>().UpdateRange(entities);
             return Task.CompletedTask;
         }
 
@@ -71,6 +73,31 @@ namespace SelfWaiter.DealerAPI.Infrastructure.Persistence.Repositories
         public IQueryable<T> Query()
         {
             return _appDbContext.Set<T>().AsQueryable();
+        }
+
+        public void UpdateAdvance(T entity, object obj)
+        {
+            var requestProperties = obj.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
+           .Where(prop => prop.Name != nameof(entity.Id));
+
+            bool isUpdate = false;
+            foreach (var requestProperty in requestProperties)
+            {
+                var value = requestProperty.GetValue(obj);
+                if (value != null)
+                {
+                    var entityProperty = entity.GetType().GetProperty(requestProperty.Name);
+                    if (entityProperty != null && entityProperty.CanWrite)
+                    {
+                        entityProperty.SetValue(entity, value);
+                        isUpdate = true;
+                    }
+                }
+            }
+
+            if(isUpdate) 
+                _appDbContext.Set<T>().Update(entity);
+
         }
 
         public Task UpdateAsync(T entity)

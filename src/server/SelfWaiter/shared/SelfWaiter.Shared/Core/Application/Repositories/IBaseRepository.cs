@@ -15,6 +15,7 @@ namespace SelfWaiter.Shared.Core.Application.Repositories
         Task CreateAsync(T entity);
         Task CreateRangeAsync(IEnumerable<T> entities);
         Task UpdateAsync(T entity);
+        void UpdateAdvance(T entity, object obj);
         Task DeleteAsync(T entity);
         Task DeleteRangeAsync(IEnumerable<T> entities);
     }

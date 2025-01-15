@@ -21,6 +21,14 @@ namespace SelfWaiter.DealerAPI.Presentation.Controllers
             return Created();
         }
 
+        [HttpPut]
+        public async Task<IActionResult> UpdateCountry([FromBody] UpdateCountryCommand request)
+        {
+            await _mediator.Send(request);
+
+            return NoContent();
+        }
+
         #endregion
 
         #region Queries

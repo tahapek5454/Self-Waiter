@@ -10,7 +10,7 @@ namespace SelfWaiter.DealerAPI.Core.Application.Features.Commands.CountryCommand
     {
         public IEnumerable<CountryDto> Countries { get; set; }
 
-        public class CreateRangeCountryCommandHandler(ICountryRepository _countryRepository, IDealerUnitOfWork _dealerUnitOfWork) : IRequestHandler<CreateRangeCountryCommand, bool>
+        public class CreateRangeCountryCommandHandler(ICountryRepository _countryRepository) : IRequestHandler<CreateRangeCountryCommand, bool>
         {
             public async Task<bool> Handle(CreateRangeCountryCommand request, CancellationToken cancellationToken)
             {

@@ -9,7 +9,7 @@ namespace SelfWaiter.DealerAPI.Core.Application.Features.Commands.CountryCommand
     {
         public IEnumerable<Guid> Ids { get; set; }
 
-        public class DeleteRangeCountryCommandHandler(ICountryRepository _countryRepository, IDealerUnitOfWork _dealerUnitOfWork) : IRequestHandler<DeleteRangeCountryCommand, bool>
+        public class DeleteRangeCountryCommandHandler(ICountryRepository _countryRepository) : IRequestHandler<DeleteRangeCountryCommand, bool>
         {
             public async Task<bool> Handle(DeleteRangeCountryCommand request, CancellationToken cancellationToken)
             {
