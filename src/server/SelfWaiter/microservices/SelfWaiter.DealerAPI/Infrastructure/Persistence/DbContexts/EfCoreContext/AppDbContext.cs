@@ -1,7 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Reflection;
+using Microsoft.EntityFrameworkCore;
 using SelfWaiter.DealerAPI.Core.Domain.Entities;
+using SelfWaiter.DealerAPI.Infrastructure.Persistence.DbContexts.EfCoreContext.Extensions;
 using SelfWaiter.Shared.Core.Domain.Entities;
-using System.Reflection;
 
 namespace SelfWaiter.DealerAPI.Infrastructure.Persistence.DbContexts.EfCoreContext
 {
@@ -92,6 +93,9 @@ namespace SelfWaiter.DealerAPI.Infrastructure.Persistence.DbContexts.EfCoreConte
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+            modelBuilder.AddGlobalQueryFilterForIsValid();
+
             base.OnModelCreating(modelBuilder);
         }
 
