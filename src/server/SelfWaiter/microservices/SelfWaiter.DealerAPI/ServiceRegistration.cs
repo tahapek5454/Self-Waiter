@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using SelfWaiter.DealerAPI.Core.Application.Behaviors;
 using SelfWaiter.DealerAPI.Core.Application.Behaviors.Dispatchers;
 using SelfWaiter.DealerAPI.Core.Application.Repositories;
+using SelfWaiter.DealerAPI.Infrastructure.ExceptionHandling;
 using SelfWaiter.DealerAPI.Infrastructure.Persistence.DbContexts.EfCoreContext;
 using SelfWaiter.DealerAPI.Infrastructure.Persistence.Repositories;
 
@@ -41,6 +42,13 @@ namespace SelfWaiter.DealerAPI
 
             #region Validation
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            #endregion
+
+            #region Exceptions
+            services.AddExceptionHandler<SelfWaiterDealerValidationExceptionHandler>();
+            services.AddExceptionHandler<SelfWaiterDealerExceptionHandler>();
+            services.AddExceptionHandler<DealerExceptionHandler>();
+            services.AddProblemDetails();
             #endregion
             return services;
         }
