@@ -1,4 +1,8 @@
 ﻿using System.Reflection;
+using Elastic.Channels;
+using Elastic.Ingest.Elasticsearch;
+using Elastic.Ingest.Elasticsearch.DataStreams;
+using Elastic.Serilog.Sinks;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using SelfWaiter.DealerAPI.Core.Application.Behaviors;
@@ -7,6 +11,7 @@ using SelfWaiter.DealerAPI.Core.Application.Repositories;
 using SelfWaiter.DealerAPI.Infrastructure.ExceptionHandling;
 using SelfWaiter.DealerAPI.Infrastructure.Persistence.DbContexts.EfCoreContext;
 using SelfWaiter.DealerAPI.Infrastructure.Persistence.Repositories;
+using Serilog;
 
 namespace SelfWaiter.DealerAPI
 {
@@ -51,6 +56,34 @@ namespace SelfWaiter.DealerAPI
             services.AddProblemDetails();
             #endregion
             return services;
+        }
+
+        public static IHostBuilder AddDealerLoggerService(this IHostBuilder hostBuilder, bool enableElasticsearch = false)
+        {
+            hostBuilder.UseSerilog((context, configuration) =>
+            {
+                var loggerConfiguration = configuration.Enrich.FromLogContext()
+                .ReadFrom.Configuration(context.Configuration);
+
+                if (enableElasticsearch)
+                {
+                    loggerConfiguration.WriteTo.Elasticsearch(new[] { new Uri(context.Configuration["URLS:ElasticSearch"] ?? "http://localhost:9200") }, opts =>
+                    {
+                        opts.DataStream = new DataStreamName("logs", "dealer-service");
+                        opts.BootstrapMethod = BootstrapMethod.Failure;
+                        opts.ConfigureChannel = channelOpts =>
+                        {
+                            channelOpts.BufferOptions = new BufferOptions { ExportMaxConcurrency = 10 };
+                        };
+                    }, transport =>
+                    {
+                        // ForNow we dont have useName and  password development env
+                        //transport.Authentication(new BasicAuthentication(username, password)); 
+                    });
+                }
+            });
+
+            return hostBuilder;
         }
     }
 }

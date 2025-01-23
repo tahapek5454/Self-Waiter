@@ -5,7 +5,6 @@ using SelfWaiter.DealerAPI.Infrastructure.Persistence.DbContexts.EfCoreContext;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy",
@@ -22,8 +21,7 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddDealerService(builder.Configuration);
 
-
-
+builder.Host.AddDealerLoggerService();
 
 var app = builder.Build();
 
