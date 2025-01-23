@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using SelfWaiter.DealerAPI.Core.Domain.Entities;
+using SelfWaiter.DealerAPI.Infrastructure.Persistence.DbContexts.EfCoreContext.Configurations.Interceptors;
 using SelfWaiter.DealerAPI.Infrastructure.Persistence.DbContexts.EfCoreContext.Extensions;
 using SelfWaiter.Shared.Core.Domain.Entities;
 
@@ -10,6 +11,7 @@ namespace SelfWaiter.DealerAPI.Infrastructure.Persistence.DbContexts.EfCoreConte
     {
 
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ILogger<AppDbContext> _logger;
         public DbSet<Country> Countries { get; set; }
         public DbSet<City> Cities { get; set; }
         public DbSet<District> Districts { get; set; }
@@ -17,9 +19,10 @@ namespace SelfWaiter.DealerAPI.Infrastructure.Persistence.DbContexts.EfCoreConte
         public DbSet<UserProfileAndDealer> UserProfileAndDealers { get; set; }
         public DbSet<UserProfile> UserProfile { get; set; }
 
-        public AppDbContext(DbContextOptions options, IHttpContextAccessor httpContextAccessor) :base(options)
+        public AppDbContext(DbContextOptions options, IHttpContextAccessor httpContextAccessor, ILogger<AppDbContext> logger) : base(options)
         {
             _httpContextAccessor = httpContextAccessor;
+            _logger = logger;
         }
 
         public override int SaveChanges()
@@ -97,6 +100,14 @@ namespace SelfWaiter.DealerAPI.Infrastructure.Persistence.DbContexts.EfCoreConte
             modelBuilder.AddGlobalQueryFilterForIsValid();
 
             base.OnModelCreating(modelBuilder);
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+
+            optionsBuilder.AddInterceptors(new QueryLoggerInterceptor(_logger));
+
+            base.OnConfiguring(optionsBuilder);
         }
 
         private string GetCurrentUserName()
