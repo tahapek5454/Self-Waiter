@@ -2,6 +2,12 @@
 {
     public static class ExceptionMessages
     {
-        public static readonly string InconsistencyExceptionMessage = "İstenilen durum ile beklenen durum tutarlı değildir.";
+        #region Global
+        public const string InconsistencyExceptionMessage = "İstenilen durum ile beklenen durum tutarlı değildir.";
+        #endregion
+
+        #region Country
+        public const string CountryNotFound = "İstenilen ülke bulunamadı.";
+        #endregion
     }
 }

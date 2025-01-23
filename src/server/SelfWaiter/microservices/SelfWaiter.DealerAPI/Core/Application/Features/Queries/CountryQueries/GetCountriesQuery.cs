@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using SelfWaiter.DealerAPI.Core.Application.Dtos;
 using SelfWaiter.DealerAPI.Core.Application.Features.Rules;
 using SelfWaiter.DealerAPI.Core.Application.Mapper;
@@ -8,14 +9,15 @@ using SelfWaiter.Shared.Core.Domain.Dtos;
 
 namespace SelfWaiter.DealerAPI.Core.Application.Features.Queries.CountryQueries
 {
-    public class GetCountriesQuery: DynamicRequest<PaginationResult<CountryDto>>
+    public class GetCountriesQuery: DynamicAndPaginationRequest<PaginationResult<CountryDto>>
     {
         public class GetCountriesQueryHandler(ICountryRepository _countryRepository) : IRequestHandler<GetCountriesQuery, PaginationResult<CountryDto>>
         {
             public async Task<PaginationResult<CountryDto>> Handle(GetCountriesQuery request, CancellationToken cancellationToken)
             {
                 var query = _countryRepository
-                                        .Query();
+                                        .Query()
+                                        .AsNoTracking();
 
                 if (request.DynamicRequest is not null)
                     query = query.ToDynamic(request.DynamicRequest);

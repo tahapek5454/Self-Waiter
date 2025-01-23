@@ -66,6 +66,24 @@ namespace SelfWaiter.DealerAPI.Presentation.Controllers
             return Ok(r);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetCountryById([FromQuery] GetCountryByIdQuery request)
+        {
+
+            var r = await _mediator.Send(request);
+
+            return Ok(r);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllCountries([FromQuery] GetAllCountriesQuery request)
+        {
+
+            var r = await _mediator.Send(request);
+
+            return Ok(r);
+        }
+
         #endregion
     }
 }
