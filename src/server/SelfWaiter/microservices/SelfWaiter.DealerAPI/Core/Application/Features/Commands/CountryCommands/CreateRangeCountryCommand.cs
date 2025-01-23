@@ -14,9 +14,6 @@ namespace SelfWaiter.DealerAPI.Core.Application.Features.Commands.CountryCommand
         {
             public async Task<bool> Handle(CreateRangeCountryCommand request, CancellationToken cancellationToken)
             {
-                if (request.Countries is null || !request.Countries.Any())
-                    return false;
-
                 var entities = ObjectMapper.Mapper.Map<List<Country>>(request.Countries);
                 await _countryRepository.CreateRangeAsync(entities);
 

@@ -13,9 +13,6 @@ namespace SelfWaiter.DealerAPI.Core.Application.Features.Commands.CountryCommand
         {
             public async Task<bool> Handle(DeleteRangeCountryCommand request, CancellationToken cancellationToken)
             {
-                if (request.Ids is null || !request.Ids.Any()) return false;
-
-
                 var entities = _countryRepository.Where(x => request.Ids.Contains(x.Id))
                                                     .ToList();
 
