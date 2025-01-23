@@ -21,8 +21,32 @@ namespace SelfWaiter.DealerAPI.Presentation.Controllers
             return Created();
         }
 
+        [HttpPost]
+        public async Task<IActionResult> CreateRangeCountry([FromBody] CreateRangeCountryCommand request)
+        {
+            await _mediator.Send(request);
+
+            return Created();
+        }
+
         [HttpPut]
         public async Task<IActionResult> UpdateCountry([FromBody] UpdateCountryCommand request)
+        {
+            await _mediator.Send(request);
+
+            return NoContent();
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteCountry([FromQuery] DeleteCountryCommand request)
+        {
+            await _mediator.Send(request);
+
+            return NoContent();
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteRangeCountry([FromBody] DeleteRangeCountryCommand request)
         {
             await _mediator.Send(request);
 

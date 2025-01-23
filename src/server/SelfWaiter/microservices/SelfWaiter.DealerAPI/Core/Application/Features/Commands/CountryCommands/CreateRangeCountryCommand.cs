@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using SelfWaiter.DealerAPI.Core.Application.Dtos;
 using SelfWaiter.DealerAPI.Core.Application.Mapper;
 using SelfWaiter.DealerAPI.Core.Application.Repositories;
 using SelfWaiter.DealerAPI.Core.Domain.Entities;
@@ -8,7 +7,7 @@ namespace SelfWaiter.DealerAPI.Core.Application.Features.Commands.CountryCommand
 {
     public class CreateRangeCountryCommand: IRequest<bool>
     {
-        public IEnumerable<CountryDto> Countries { get; set; }
+        public IEnumerable<CreateRangeCountryRequest> Countries { get; set; }
 
         public class CreateRangeCountryCommandHandler(ICountryRepository _countryRepository) : IRequestHandler<CreateRangeCountryCommand, bool>
         {
@@ -20,5 +19,14 @@ namespace SelfWaiter.DealerAPI.Core.Application.Features.Commands.CountryCommand
                 return true;
             }
         }
+
+        
     }
+
+    public class CreateRangeCountryRequest
+    {
+        public string Name { get; set; }
+    }
+
+
 }
