@@ -19,7 +19,13 @@ namespace SelfWaiter.DealerAPI.Infrastructure.Persistence.DbContexts.EfCoreConte
 
         private IEnumerable<Country> SeedDatas()
         {
-            return Enumerable.Empty<Country>();
+            yield return new Country()
+            {
+                CreatedDate = new DateTime(2025, 01, 01),
+                CreatorUserName = "tahapek",
+                Id = new Guid("00000000-0000-0000-0000-000000000001"),
+                Name = "Türkiye",
+            };
         }
     }
 }
