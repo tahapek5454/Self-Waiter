@@ -18,7 +18,8 @@ namespace SelfWaiter.DealerAPI.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsValid = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -39,7 +40,8 @@ namespace SelfWaiter.DealerAPI.Migrations
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatorUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatetorUserName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    UpdatetorUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsValid = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -54,7 +56,8 @@ namespace SelfWaiter.DealerAPI.Migrations
                     Name = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
                     CountryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsValid = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -75,7 +78,8 @@ namespace SelfWaiter.DealerAPI.Migrations
                     Name = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
                     CityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsValid = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -101,7 +105,8 @@ namespace SelfWaiter.DealerAPI.Migrations
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatorUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatetorUserName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    UpdatetorUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsValid = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -124,7 +129,8 @@ namespace SelfWaiter.DealerAPI.Migrations
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatorUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatetorUserName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    UpdatetorUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsValid = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -142,6 +148,21 @@ namespace SelfWaiter.DealerAPI.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "Countries",
+                columns: new[] { "Id", "CreatedDate", "IsValid", "Name", "UpdatedDate" },
+                values: new object[] { new Guid("00000000-0000-0000-0000-000000000001"), new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Türkiye", null });
+
+            migrationBuilder.InsertData(
+                table: "Cities",
+                columns: new[] { "Id", "CountryId", "CreatedDate", "IsValid", "Name", "UpdatedDate" },
+                values: new object[] { new Guid("7333d5e7-ae6a-4523-88ac-7383c9a9f6a5"), new Guid("00000000-0000-0000-0000-000000000001"), new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Sakarya", null });
+
+            migrationBuilder.InsertData(
+                table: "Districts",
+                columns: new[] { "Id", "CityId", "CreatedDate", "IsValid", "Name", "UpdatedDate" },
+                values: new object[] { new Guid("24818128-6c4e-453d-8a1f-15f75e8aa746"), new Guid("7333d5e7-ae6a-4523-88ac-7383c9a9f6a5"), new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Serdivan", null });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Cities_CountryId",

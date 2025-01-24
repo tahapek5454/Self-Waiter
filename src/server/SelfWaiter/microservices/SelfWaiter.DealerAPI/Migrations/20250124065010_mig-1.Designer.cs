@@ -12,8 +12,8 @@ using SelfWaiter.DealerAPI.Infrastructure.Persistence.DbContexts.EfCoreContext;
 namespace SelfWaiter.DealerAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250115173644_mig-4")]
-    partial class mig4
+    [Migration("20250124065010_mig-1")]
+    partial class mig1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -88,6 +88,15 @@ namespace SelfWaiter.DealerAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Countries");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000001"),
+                            CreatedDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsValid = true,
+                            Name = "Türkiye"
+                        });
                 });
 
             modelBuilder.Entity("SelfWaiter.DealerAPI.Core.Domain.Entities.Dealer", b =>
