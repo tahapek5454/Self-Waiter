@@ -18,7 +18,7 @@ namespace SelfWaiter.DealerAPI.Core.Application.Features.Queries.CountryQueries
 
                 var countryDtosQueryable = ObjectMapper.Mapper.ProjectTo<CountryDto>(countriesQueryable);
 
-                return await Task.FromResult(countryDtosQueryable.ToList());
+                return await Task.FromResult(countryDtosQueryable?.ToList() ?? Enumerable.Empty<CountryDto>());
 
             }
         }

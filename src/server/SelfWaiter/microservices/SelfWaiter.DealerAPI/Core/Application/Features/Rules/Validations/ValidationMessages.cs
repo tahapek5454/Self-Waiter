@@ -7,5 +7,9 @@
         public const string CountriesCanNotBeEmpty = "Ülke girilmesi zorunludur.";
         public const string CountryIdCanNotBeEmpty = "Ülke id girilmesi zorunludur.";
         #endregion
+
+        #region City
+        public const string CityIdCanNotBeEmpty = "Şehir id girilmesi zorunludur.";
+        #endregion
     }
 }
