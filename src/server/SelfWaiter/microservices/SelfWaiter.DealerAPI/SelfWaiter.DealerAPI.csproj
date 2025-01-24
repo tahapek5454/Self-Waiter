@@ -36,7 +36,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Core\Application\Features\Commands\CityCommands\" />
     <Folder Include="Core\Domain\Enums\" />
   </ItemGroup>
 

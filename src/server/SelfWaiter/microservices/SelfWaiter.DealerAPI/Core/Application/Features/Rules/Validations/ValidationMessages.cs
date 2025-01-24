@@ -10,6 +10,11 @@
 
         #region City
         public const string CityIdCanNotBeEmpty = "Şehir id girilmesi zorunludur.";
+        public const string CityNameCanNotBeEmpty = "Şehir ismi girilmesi zorunludur.";
+        public const string City_CountryIdCanNotBeEmpty = "Şehir eklenirken ülke seçilmesi zorunludur.";
+        public const string CitiesCanNotBeEmpty = "Şehir girilmesi zorunludur.";
+
+
         #endregion
     }
 }

@@ -14,6 +14,8 @@ namespace SelfWaiter.DealerAPI.Core.Application.Mapper
 
             CreateMap<City, CityDto>().ReverseMap();
             CreateMap<CreateCityCommand, City>();
+            CreateMap<UpdateCityCommand, City>();
+            CreateMap<CreateRangeCityRequest, City>();
 
             #endregion
 
