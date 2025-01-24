@@ -2,6 +2,8 @@
 using SelfWaiter.DealerAPI.Core.Application.Mapper;
 using SelfWaiter.DealerAPI.Core.Application.Repositories;
 using SelfWaiter.DealerAPI.Core.Domain.Entities;
+using SelfWaiter.Shared.Core.Application.Utilities;
+using SelfWaiter.Shared.Core.Application.Utilities.Consts;
 
 namespace SelfWaiter.DealerAPI.Core.Application.Features.Commands.CountryCommands
 {
@@ -13,6 +15,9 @@ namespace SelfWaiter.DealerAPI.Core.Application.Features.Commands.CountryCommand
         {      
             public async Task<bool> Handle(CreateCountryCommand request, CancellationToken cancellationToken)
             {
+                if (await _countryRepository.AnyAsync(x => x.Name.Equals(request.Name)))
+                    throw new SelfWaiterException(ExceptionMessages.CountryAlreadyExist);
+
                 var country = ObjectMapper.Mapper.Map<Country>(request);
                 await _countryRepository.CreateAsync(country);
 

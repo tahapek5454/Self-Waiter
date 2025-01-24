@@ -2,6 +2,8 @@
 using SelfWaiter.DealerAPI.Core.Application.Mapper;
 using SelfWaiter.DealerAPI.Core.Application.Repositories;
 using SelfWaiter.DealerAPI.Core.Domain.Entities;
+using SelfWaiter.Shared.Core.Application.Utilities.Consts;
+using SelfWaiter.Shared.Core.Application.Utilities;
 
 namespace SelfWaiter.DealerAPI.Core.Application.Features.Commands.CityCommands
 {
@@ -12,6 +14,10 @@ namespace SelfWaiter.DealerAPI.Core.Application.Features.Commands.CityCommands
         {
             public async Task<bool> Handle(CreateRangeCityCommand request, CancellationToken cancellationToken)
             {
+                var names = request.Cities.Select(x => x.Name);
+                if (await _cityRepository.AnyAsync(x => names.Contains(x.Name)))
+                    throw new SelfWaiterException(ExceptionMessages.CityAlreadyExist);
+
                 var cities = ObjectMapper.Mapper.Map<IEnumerable<City>>(request.Cities);
 
                 await _cityRepository.CreateRangeAsync(cities);

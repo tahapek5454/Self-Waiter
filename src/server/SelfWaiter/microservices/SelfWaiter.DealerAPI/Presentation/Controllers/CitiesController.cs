@@ -16,7 +16,7 @@ namespace SelfWaiter.DealerAPI.Presentation.Controllers
         {
             var r = await _mediator.Send(command);
 
-            return Ok(r);
+            return Created();
         }
 
         [HttpPost]
@@ -24,21 +24,21 @@ namespace SelfWaiter.DealerAPI.Presentation.Controllers
         {
             var r = await _mediator.Send(command);
 
-            return Ok(r);
+            return Created();
         }
 
         [HttpDelete]
         public async Task<IActionResult> DeleteCity([FromQuery] DeleteCityCommand command)
         {
             var r = await _mediator.Send(command);
-            return Ok(r);
+            return NoContent();
         }
 
         [HttpDelete]
         public async Task<IActionResult> DeleteRangeCity([FromBody] DeleteRangeCityCommand command)
         {
             var r = await _mediator.Send(command);
-            return Ok(r);
+            return NoContent();
         }
 
         [HttpPut]
@@ -46,7 +46,7 @@ namespace SelfWaiter.DealerAPI.Presentation.Controllers
         {
             var r = await _mediator.Send(command);
 
-            return Ok();
+            return NoContent();
         }
 
         #endregion

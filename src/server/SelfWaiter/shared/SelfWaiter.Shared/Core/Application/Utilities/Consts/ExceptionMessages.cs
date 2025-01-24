@@ -9,10 +9,12 @@
 
         #region Country
         public const string CountryNotFound = "İstenilen ülke bulunamadı.";
+        public const string CountryAlreadyExist = "Eklenmek istenin ülke zaten mevcut";
         #endregion
 
         #region City
         public const string CityNotFound = "İstenilen şehir bulunamadı.";
+        public const string CityAlreadyExist = "Eklenmek istenin şehir zaten mevcut";
         #endregion
     }
 }
