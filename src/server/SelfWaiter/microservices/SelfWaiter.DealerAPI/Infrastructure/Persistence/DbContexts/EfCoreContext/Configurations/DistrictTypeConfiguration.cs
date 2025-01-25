@@ -17,9 +17,11 @@ namespace SelfWaiter.DealerAPI.Infrastructure.Persistence.DbContexts.EfCoreConte
                 .HasMaxLength(80);
 
             builder.HasIndex(x => new { x.Name, x.IsValid })
-                .IsUnique();
+                .IsUnique()
+                .IsDescending(new[] { true, true });
 
-            builder.HasIndex(x => x.IsValid);
+            builder.HasIndex(x => x.IsValid)
+                .IsDescending(true);
 
             builder.HasData(SeedDatas());
         }
