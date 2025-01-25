@@ -19,6 +19,9 @@
 
         #region District
         public const string DistrictIdCanNotBeEmpty = "İlçe id girilmesi zorunludur.";
+        public const string DistrictNameCanNotBeEmpty = "İlçe ismi girilmesi zorunludur.";
+        public const string District_CityIdCanNotBeEmpty = "İlçe eklenirken şehir seçilmesi zorunludur.";
+        public const string DistrictsCanNotBeEmpty = "İlçe girilmesi zorunludur.";
         #endregion
     }
 }

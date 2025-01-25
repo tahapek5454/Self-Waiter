@@ -19,6 +19,7 @@
 
         #region District
         public const string DistrictNotFound = "İstenilen ilçe bulunamadı.";
+        public const string DistrictAlreadyExist = "Eklenmek istenin ilçe zaten mevcut";
         #endregion
     }
 }
