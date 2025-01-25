@@ -16,5 +16,9 @@
         public const string CityNotFound = "İstenilen şehir bulunamadı.";
         public const string CityAlreadyExist = "Eklenmek istenin şehir zaten mevcut";
         #endregion
+
+        #region District
+        public const string DistrictNotFound = "İstenilen ilçe bulunamadı.";
+        #endregion
     }
 }

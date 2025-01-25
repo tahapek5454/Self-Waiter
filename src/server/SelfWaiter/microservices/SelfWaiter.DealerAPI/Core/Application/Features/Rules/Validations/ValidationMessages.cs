@@ -16,5 +16,9 @@
 
 
         #endregion
+
+        #region District
+        public const string DistrictIdCanNotBeEmpty = "İlçe id girilmesi zorunludur.";
+        #endregion
     }
 }
