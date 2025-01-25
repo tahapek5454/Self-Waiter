@@ -1,4 +1,6 @@
 ﻿using System.Reflection;
+using System.Security.Claims;
+using System.Security.Principal;
 using Elastic.Channels;
 using Elastic.Ingest.Elasticsearch;
 using Elastic.Ingest.Elasticsearch.DataStreams;
@@ -11,6 +13,7 @@ using SelfWaiter.DealerAPI.Core.Application.Repositories;
 using SelfWaiter.DealerAPI.Infrastructure.ExceptionHandling;
 using SelfWaiter.DealerAPI.Infrastructure.Persistence.DbContexts.EfCoreContext;
 using SelfWaiter.DealerAPI.Infrastructure.Persistence.Repositories;
+using SelfWaiter.Shared.Core.Application.Utilities.Consts;
 using Serilog;
 
 namespace SelfWaiter.DealerAPI
@@ -84,6 +87,44 @@ namespace SelfWaiter.DealerAPI
             });
 
             return hostBuilder;
+        }
+
+        public static Guid? GetUserIdOrDefault(this ClaimsPrincipal claimsPrincipal, bool IsDevelopment = false)
+        {
+            if (!IsDevelopment)
+            {
+                if(claimsPrincipal.Identity?.IsAuthenticated != true)
+                {
+                    return null;
+                }
+                else
+                {
+                    return GetUserId(claimsPrincipal);
+                }
+            }
+            else
+            {
+                Guid? userId = GetUserId(claimsPrincipal);
+
+                if (userId is null)
+                    return Guid.Parse(SelfWaiterDefaultValues.UserId);
+                else
+                    return userId;
+            }   
+        }
+
+        private static Guid? GetUserId(ClaimsPrincipal claimsPrincipal)
+        {
+            string? userId = claimsPrincipal.Claims
+                                .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            if (userId is null)
+                userId = claimsPrincipal.Claims
+                        .FirstOrDefault(c => c.Type == SelfWaiterDefaultValues.AlternativeUserIdClaimType)?.Value;
+
+            if (Guid.TryParse(userId, out Guid guidId))
+                return guidId;
+            else return null;
         }
     }
 }
