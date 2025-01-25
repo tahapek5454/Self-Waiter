@@ -2,6 +2,7 @@
 using SelfWaiter.DealerAPI.Core.Application.Dtos;
 using SelfWaiter.DealerAPI.Core.Application.Features.Commands.CityCommands;
 using SelfWaiter.DealerAPI.Core.Application.Features.Commands.CountryCommands;
+using SelfWaiter.DealerAPI.Core.Application.Features.Commands.DealerCommands;
 using SelfWaiter.DealerAPI.Core.Application.Features.Commands.DistrictCommands;
 using SelfWaiter.DealerAPI.Core.Domain.Entities;
 
@@ -32,6 +33,7 @@ namespace SelfWaiter.DealerAPI.Core.Application.Mapper
             #region Dealer
 
             CreateMap<Dealer, DealerDto>();
+            CreateMap<CreateDealerCommand, Dealer>();
 
             #endregion
 

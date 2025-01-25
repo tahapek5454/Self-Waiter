@@ -21,5 +21,10 @@
         public const string DistrictNotFound = "İstenilen ilçe bulunamadı.";
         public const string DistrictAlreadyExist = "Eklenmek istenin ilçe zaten mevcut";
         #endregion
+
+        #region Dealer
+        public const string DealerNotFound = "İstenilen şube bulunamadı.";
+        public const string DealerAlreadyExist = "Eklenmek istenin şube isminde bir kayıt zaten mevcut";
+        #endregion
     }
 }

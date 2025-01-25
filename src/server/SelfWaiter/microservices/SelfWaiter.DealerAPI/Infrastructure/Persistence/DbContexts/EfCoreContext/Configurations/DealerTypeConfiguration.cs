@@ -1,5 +1,4 @@
-﻿using System.Reflection.Emit;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SelfWaiter.DealerAPI.Core.Domain.Entities;
 
@@ -12,13 +11,23 @@ namespace SelfWaiter.DealerAPI.Infrastructure.Persistence.DbContexts.EfCoreConte
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Name)
+                .HasMaxLength(75)
                 .IsRequired();
-
-            builder.Property(x => x.Name)
-                .HasMaxLength(100);
 
             builder.Property(x => x.Adress)
             .HasMaxLength(250);
+
+            builder.Property(x => x.PhoneNumber)
+                .HasMaxLength(25);
+
+            builder.HasIndex(x => x.PhoneNumber)
+                .IsUnique();
+
+            builder.HasIndex(x => x.Name)
+                .IsUnique();
+
+            builder.HasIndex(x => x.IsValid)
+                .IsDescending(true);
 
             builder
                 .HasOne(d => d.CreatorUser)

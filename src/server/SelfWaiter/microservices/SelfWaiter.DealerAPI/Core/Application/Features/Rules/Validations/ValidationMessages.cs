@@ -23,5 +23,15 @@
         public const string District_CityIdCanNotBeEmpty = "İlçe eklenirken şehir seçilmesi zorunludur.";
         public const string DistrictsCanNotBeEmpty = "İlçe girilmesi zorunludur.";
         #endregion
+
+        #region Dealer
+        public const string DealerIdCanNotBeEmpty = "Şube id girilmesi zorunludur.";
+        public const string DealerNameCanNotBeEmpty = "Şube ismi girilmesi zorunludur.";
+        public const string DealerNameMaxLength = "Şube ismi 75 karakterden büyük olamaz.";
+        public const string Dealer_DistrictIdCanNotBeEmpty = "Şube eklenirken ilçe seçilmesi zorunludur.";
+        public const string Dealer_CreatorUserIdCanNotBeEmpty = "Şube eklenirken kullanıcı girişi zorunludur.";
+        public const string Dealer_AdressMaxLength = "Adres bilgisi maksimum 250 karakter olmalıdır.";
+        public const string Dealer_PhoneNumberMaxLength = "Telefon numarası bilgisi maksimum 25 karakter olmalıdır.";
+        #endregion
     }
 }

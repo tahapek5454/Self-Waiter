@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SelfWaiter.DealerAPI.Core.Domain.Entities;
+using SelfWaiter.Shared.Core.Application.Utilities.Consts;
 
 namespace SelfWaiter.DealerAPI.Infrastructure.Persistence.DbContexts.EfCoreContext.Configurations
 {
@@ -48,7 +49,7 @@ namespace SelfWaiter.DealerAPI.Infrastructure.Persistence.DbContexts.EfCoreConte
         {
             yield return new()
             {
-                Id = Guid.Parse("2d9b274f-753f-4aab-947d-cbf9d232b811"),
+                Id = Guid.Parse(SelfWaiterDefaultValues.UserId),
                 Name = "Taha",
                 Surname = "Pek",
                 Email = "taha_test@gmail.com",
