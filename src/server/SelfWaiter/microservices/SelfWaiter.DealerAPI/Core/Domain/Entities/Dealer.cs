@@ -10,6 +10,8 @@ namespace SelfWaiter.DealerAPI.Core.Domain.Entities
         public string? ImageUrl { get; set; }
         public Guid DistrictId { get; set; }
         public virtual District District { get; set; }
+        public Guid? CreatorUserId { get; set; }
+        public virtual UserProfile? CreatorUser { get; set; }
         public virtual IEnumerable<UserProfileAndDealer> UserProfileAndDealers { get; set; }
     }
 }
