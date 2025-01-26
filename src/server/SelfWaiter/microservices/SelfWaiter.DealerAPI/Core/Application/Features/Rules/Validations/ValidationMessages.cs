@@ -26,6 +26,8 @@
 
         #region Dealer
         public const string DealerIdCanNotBeEmpty = "Şube id girilmesi zorunludur.";
+        public const string DealerCreatorUserIdCanNotBeEmpty = "Şubeyi oluşturuan kullanıcı id girilmesi zorunludur.";
+        public const string Dealer_UserIdCanNotBeEmpty = "Kullanıcı id girilmesi zorunludur.";
         public const string DealerNameCanNotBeEmpty = "Şube ismi girilmesi zorunludur.";
         public const string DealerNameMaxLength = "Şube ismi 75 karakterden büyük olamaz.";
         public const string Dealer_DistrictIdCanNotBeEmpty = "Şube eklenirken ilçe seçilmesi zorunludur.";
