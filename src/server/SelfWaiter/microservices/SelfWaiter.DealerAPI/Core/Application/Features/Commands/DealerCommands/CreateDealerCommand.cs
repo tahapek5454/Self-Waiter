@@ -23,6 +23,11 @@ namespace SelfWaiter.DealerAPI.Core.Application.Features.Commands.DealerCommands
                     throw new SelfWaiterException(ExceptionMessages.DealerAlreadyExist);
 
                 var dealer = ObjectMapper.Mapper.Map<Dealer>(request);
+                dealer.UserProfileAndDealers ??= new List<UserProfileAndDealer>();
+                dealer.UserProfileAndDealers.Add(new()
+                {
+                    UserProfileId = request.CreatorUserId ?? Guid.Empty,
+                });
 
                 await _dealerRepository.CreateAsync(dealer);
 

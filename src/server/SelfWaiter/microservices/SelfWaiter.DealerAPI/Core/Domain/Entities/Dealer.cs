@@ -12,6 +12,6 @@ namespace SelfWaiter.DealerAPI.Core.Domain.Entities
         public virtual District District { get; set; }
         public Guid? CreatorUserId { get; set; }
         public virtual UserProfile? CreatorUser { get; set; }
-        public virtual IEnumerable<UserProfileAndDealer> UserProfileAndDealers { get; set; }
+        public virtual List<UserProfileAndDealer> UserProfileAndDealers { get; set; }
     }
 }
