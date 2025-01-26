@@ -23,6 +23,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.1" />
 	<PackageReference Include="Scalar.AspNetCore" Version="1.2.72" />
 	<PackageReference Include="Elastic.Serilog.Sinks" Version="8.12.3" />
 	<PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
@@ -32,11 +33,9 @@
 	<PackageReference Include="Serilog.Settings.Configuration" Version="9.0.0" />
 	<PackageReference Include="Serilog.Sinks.Async" Version="2.1.0" />
 	<PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+	<PackageReference Include="ZiggyCreatures.FusionCache" Version="2.0.0" />
+	<PackageReference Include="ZiggyCreatures.FusionCache.Serialization.SystemTextJson" Version="2.0.0" />
 
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Core\Domain\Enums\" />
   </ItemGroup>
 
   <ItemGroup>

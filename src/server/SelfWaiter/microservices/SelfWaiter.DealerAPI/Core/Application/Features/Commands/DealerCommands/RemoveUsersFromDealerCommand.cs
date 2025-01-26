@@ -1,9 +1,10 @@
 ﻿using MediatR;
-using SelfWaiter.DealerAPI.Core.Application.Repositories;
-using SelfWaiter.Shared.Core.Application.Utilities.Consts;
-using SelfWaiter.Shared.Core.Application.Utilities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Hybrid;
+using SelfWaiter.DealerAPI.Core.Application.Repositories;
 using SelfWaiter.Shared.Core.Application.Extension;
+using SelfWaiter.Shared.Core.Application.Utilities;
+using SelfWaiter.Shared.Core.Application.Utilities.Consts;
 
 namespace SelfWaiter.DealerAPI.Core.Application.Features.Commands.DealerCommands
 {
@@ -11,7 +12,7 @@ namespace SelfWaiter.DealerAPI.Core.Application.Features.Commands.DealerCommands
     {
         public IEnumerable<Guid> UserIds { get; set; }
         public Guid DealerId { get; set; }
-        public class RemoveUsersFromDealerCommandHandler(IDealerRepository _dealerRepository, IUserProfileRepository _userProfileRepository) : IRequestHandler<RemoveUsersFromDealerCommand, bool>
+        public class RemoveUsersFromDealerCommandHandler(IDealerRepository _dealerRepository, IUserProfileRepository _userProfileRepository, HybridCache _hybridCache) : IRequestHandler<RemoveUsersFromDealerCommand, bool>
         {
             public async Task<bool> Handle(RemoveUsersFromDealerCommand request, CancellationToken cancellationToken)
             {
@@ -30,8 +31,9 @@ namespace SelfWaiter.DealerAPI.Core.Application.Features.Commands.DealerCommands
 
                 if(deletedUserProfileAndDealersDatas?.Any() != true)
                     throw new SelfWaiterException(ExceptionMessages.InconsistencyExceptionMessage);
-
                 deletedUserProfileAndDealersDatas.Foreach(x => x.IsValid = false);
+
+                await _hybridCache.RemoveByTagAsync([CacheTags.Dealer]);
 
                 return true;
             }

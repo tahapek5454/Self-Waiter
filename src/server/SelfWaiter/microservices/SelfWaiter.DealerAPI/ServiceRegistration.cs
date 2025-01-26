@@ -1,12 +1,12 @@
 ﻿using System.Reflection;
 using System.Security.Claims;
-using System.Security.Principal;
 using Elastic.Channels;
 using Elastic.Ingest.Elasticsearch;
 using Elastic.Ingest.Elasticsearch.DataStreams;
 using Elastic.Serilog.Sinks;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
 using SelfWaiter.DealerAPI.Core.Application.Behaviors;
 using SelfWaiter.DealerAPI.Core.Application.Behaviors.Dispatchers;
 using SelfWaiter.DealerAPI.Core.Application.Repositories;
@@ -15,6 +15,8 @@ using SelfWaiter.DealerAPI.Infrastructure.Persistence.DbContexts.EfCoreContext;
 using SelfWaiter.DealerAPI.Infrastructure.Persistence.Repositories;
 using SelfWaiter.Shared.Core.Application.Utilities.Consts;
 using Serilog;
+using ZiggyCreatures.Caching.Fusion;
+using ZiggyCreatures.Caching.Fusion.Serialization.SystemTextJson;
 
 namespace SelfWaiter.DealerAPI
 {
@@ -59,6 +61,25 @@ namespace SelfWaiter.DealerAPI
             services.AddExceptionHandler<DealerExceptionHandler>();
             services.AddProblemDetails();
             #endregion
+            return services;
+        }
+
+        public static IServiceCollection AddDealerCache(this IServiceCollection services, IConfiguration configuration, bool enableRedis = false)
+        {
+
+            var builder = services.AddFusionCache()
+                .WithDefaultEntryOptions(options => options.Duration = TimeSpan.FromMinutes(10))
+                .WithSerializer(new FusionCacheSystemTextJsonSerializer());
+                
+            if (enableRedis)
+            {
+                builder.WithDistributedCache(
+                        new RedisCache(new RedisCacheOptions() { Configuration = configuration.GetConnectionString("Redis") })
+                    );
+            }
+
+            builder.AsHybridCache();
+
             return services;
         }
 

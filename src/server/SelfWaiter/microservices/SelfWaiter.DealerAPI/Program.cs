@@ -21,7 +21,8 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddDealerService(builder.Configuration);
 
-builder.Host.AddDealerLoggerService();
+builder.Services.AddDealerCache(builder.Configuration, enableRedis:false);
+builder.Host.AddDealerLoggerService(enableElasticsearch:false);
 
 var app = builder.Build();
 

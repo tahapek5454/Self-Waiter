@@ -1,7 +1,8 @@
 ﻿using MediatR;
+using Microsoft.Extensions.Caching.Hybrid;
 using SelfWaiter.DealerAPI.Core.Application.Repositories;
-using SelfWaiter.Shared.Core.Application.Utilities.Consts;
 using SelfWaiter.Shared.Core.Application.Utilities;
+using SelfWaiter.Shared.Core.Application.Utilities.Consts;
 
 namespace SelfWaiter.DealerAPI.Core.Application.Features.Commands.DealerCommands
 {
@@ -13,7 +14,7 @@ namespace SelfWaiter.DealerAPI.Core.Application.Features.Commands.DealerCommands
         public string? PhoneNumber { get; set; }
         public Guid? DistrictId { get; set; }
         public Guid? CreatorUserId { get; set; }
-        public class UpdateDealerCommandHandler(IDealerRepository _dealerRepository) : IRequestHandler<UpdateDealerCommand, bool>
+        public class UpdateDealerCommandHandler(IDealerRepository _dealerRepository, HybridCache _hybridCache) : IRequestHandler<UpdateDealerCommand, bool>
         {
             public async Task<bool> Handle(UpdateDealerCommand request, CancellationToken cancellationToken)
             {
@@ -21,8 +22,9 @@ namespace SelfWaiter.DealerAPI.Core.Application.Features.Commands.DealerCommands
 
                 if (dealer is null)
                     throw new SelfWaiterException(ExceptionMessages.DealerNotFound);
-
                 _dealerRepository.UpdateAdvance(dealer, request);
+
+                await _hybridCache.RemoveByTagAsync([CacheTags.Dealer]);
 
                 return true;
             }
