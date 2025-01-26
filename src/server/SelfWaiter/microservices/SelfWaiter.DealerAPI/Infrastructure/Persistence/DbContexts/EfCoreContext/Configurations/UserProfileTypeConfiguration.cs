@@ -57,6 +57,17 @@ namespace SelfWaiter.DealerAPI.Infrastructure.Persistence.DbContexts.EfCoreConte
                 CreatedDate = new DateTime(2025,01,25),
                 CreatorUserName = "taha.pek"
             };
+
+            yield return new()
+            {
+                Id = Guid.Parse(SelfWaiterDefaultValues.UserId2),
+                Name = "Ahmet Zeyt",
+                Surname = "Sertel",
+                Email = "ahmet_test@gmail.com",
+                UserName = "azeyt.sertel",
+                CreatedDate = new DateTime(2025, 01, 25),
+                CreatorUserName = "taha.pek"
+            };
         }
     }
 }

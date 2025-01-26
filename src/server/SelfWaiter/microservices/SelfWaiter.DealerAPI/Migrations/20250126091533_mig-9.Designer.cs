@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SelfWaiter.DealerAPI.Infrastructure.Persistence.DbContexts.EfCoreContext;
 
@@ -11,9 +12,11 @@ using SelfWaiter.DealerAPI.Infrastructure.Persistence.DbContexts.EfCoreContext;
 namespace SelfWaiter.DealerAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250126091533_mig-9")]
+    partial class mig9
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -295,17 +298,6 @@ namespace SelfWaiter.DealerAPI.Migrations
                             Name = "Taha",
                             Surname = "Pek",
                             UserName = "taha.pek"
-                        },
-                        new
-                        {
-                            Id = new Guid("e0585510-5747-4c20-85ba-f2325deaedfd"),
-                            CreatedDate = new DateTime(2025, 1, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatorUserName = "taha.pek",
-                            Email = "ahmet_test@gmail.com",
-                            IsValid = true,
-                            Name = "Ahmet Zeyt",
-                            Surname = "Sertel",
-                            UserName = "azeyt.sertel"
                         });
                 });
 

@@ -49,6 +49,23 @@ namespace SelfWaiter.DealerAPI.Presentation.Controllers
 
             return NoContent();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> AddUsersToDealer([FromBody] AddUsersToDealerCommand command)
+        {
+            var r = await _mediator.Send(command);
+
+            return Created();
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> RemoveUsersFromDealer([FromBody] RemoveUsersFromDealerCommand command)
+        {
+            var r = await _mediator.Send(command);
+
+            return NoContent();
+        }
+
         #endregion
 
         #region Queries

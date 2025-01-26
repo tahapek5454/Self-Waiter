@@ -8,7 +8,8 @@ namespace SelfWaiter.DealerAPI.Infrastructure.Persistence.DbContexts.EfCoreConte
     {
         public void Configure(EntityTypeBuilder<UserProfileAndDealer> builder)
         {
-            
+            builder.HasIndex(x => new { x.DealerId, x.UserProfileId, x.IsValid })
+                .IsUnique();
         }
 
         private IEnumerable<UserProfileAndDealer> SeedDatas()
