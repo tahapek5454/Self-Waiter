@@ -46,6 +46,7 @@ namespace SelfWaiter.DealerAPI
             services.AddScoped<IDistrictRepository, DistrictRepository>();
             services.AddScoped<IUserProfileRepository, UserProfileRepository>();
             services.AddScoped<IDealerUnitOfWork, DealerUnitOfWork>();
+            services.AddScoped<IUserProfileAndDealerRepository, UserProfileAndDealerRepository>();
             #endregion
 
             #region Validation
