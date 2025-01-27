@@ -5,8 +5,6 @@ using SelfWaiter.DealerAPI.Core.Application.Features.Rules;
 using SelfWaiter.DealerAPI.Core.Application.Mapper;
 using SelfWaiter.DealerAPI.Core.Application.Repositories;
 using SelfWaiter.Shared.Core.Application.Extension;
-using SelfWaiter.Shared.Core.Application.Utilities.Consts;
-using SelfWaiter.Shared.Core.Application.Utilities;
 using SelfWaiter.Shared.Core.Domain.Dtos;
 
 namespace SelfWaiter.DealerAPI.Core.Application.Features.Queries.CountryQueries
@@ -26,8 +24,6 @@ namespace SelfWaiter.DealerAPI.Core.Application.Features.Queries.CountryQueries
 
                 var queryDto = ObjectMapper.Mapper.ProjectTo<CountryDto>(query);
 
-                if (queryDto is null)
-                    throw new SelfWaiterException(ExceptionMessages.InvalidQuery);
 
                 var r = queryDto.GetPage(request.Page, request.Size);
 

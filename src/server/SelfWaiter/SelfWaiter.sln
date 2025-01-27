@@ -31,6 +31,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelfWaiter.StateMachine", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelfWaiter.Shared", "shared\SelfWaiter.Shared\SelfWaiter.Shared.csproj", "{BC585892-6B9B-46CC-8ABC-8BFF324FADFC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "unitTests", "unitTests", "{22F86C0F-3B96-4995-9B1F-06BB3907694C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelfWaiter.DealerAPI.Test", "unitTests\SelfWaiter.DealerAPI.Test\SelfWaiter.DealerAPI.Test.csproj", "{16866AD4-9D2A-4788-8BE9-2EB9650BD875}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +81,10 @@ Global
 		{BC585892-6B9B-46CC-8ABC-8BFF324FADFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC585892-6B9B-46CC-8ABC-8BFF324FADFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC585892-6B9B-46CC-8ABC-8BFF324FADFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16866AD4-9D2A-4788-8BE9-2EB9650BD875}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16866AD4-9D2A-4788-8BE9-2EB9650BD875}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16866AD4-9D2A-4788-8BE9-2EB9650BD875}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16866AD4-9D2A-4788-8BE9-2EB9650BD875}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -92,5 +100,6 @@ Global
 		{28F5ACDB-C8CD-42ED-9F8A-CDA2A9BC4DAD} = {3A562C9C-96D1-412E-A46F-C7AD723CB961}
 		{EDCD0FBA-925B-4EC5-BBF3-BA9650B5B188} = {AA3A4D47-70CC-43E8-9BEB-42F95ADEDBCD}
 		{BC585892-6B9B-46CC-8ABC-8BFF324FADFC} = {269366DF-83F7-418A-8B4B-CBEC9DF06F43}
+		{16866AD4-9D2A-4788-8BE9-2EB9650BD875} = {22F86C0F-3B96-4995-9B1F-06BB3907694C}
 	EndGlobalSection
 EndGlobal
