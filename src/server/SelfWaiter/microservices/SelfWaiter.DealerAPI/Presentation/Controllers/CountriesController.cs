@@ -2,14 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using SelfWaiter.DealerAPI.Core.Application.Features.Commands.CountryCommands;
 using SelfWaiter.DealerAPI.Core.Application.Features.Queries.CountryQueries;
-using SelfWaiter.DealerAPI.Core.Application.Repositories;
 using SelfWaiter.Shared.Core.Domain.Dtos;
 
 namespace SelfWaiter.DealerAPI.Presentation.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class CountriesController(IMediator _mediator, ICountryRepository _countryRepository) : ControllerBase
+    public class CountriesController(IMediator _mediator) : ControllerBase
     {
 
         #region Commands
