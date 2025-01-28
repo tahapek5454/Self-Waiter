@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using Microsoft.Extensions.Caching.Hybrid;
+using SelfWaiter.DealerAPI.Core.Application.Features.Notifications.DomainEvents;
 using SelfWaiter.DealerAPI.Core.Application.Repositories;
 using SelfWaiter.Shared.Core.Application.Utilities;
 using SelfWaiter.Shared.Core.Application.Utilities.Consts;
@@ -9,7 +9,7 @@ namespace SelfWaiter.DealerAPI.Core.Application.Features.Commands.DealerCommands
     public class DeleteDealerCommand: IRequest<bool>
     {
         public Guid Id { get; set; }
-        public class DeleteDealerCommandHandler(IDealerRepository _dealerRepository, HybridCache _hybridCache) : IRequestHandler<DeleteDealerCommand, bool>
+        public class DeleteDealerCommandHandler(IDealerRepository _dealerRepository) : IRequestHandler<DeleteDealerCommand, bool>
         {
             public async Task<bool> Handle(DeleteDealerCommand request, CancellationToken cancellationToken)
             {
@@ -19,7 +19,10 @@ namespace SelfWaiter.DealerAPI.Core.Application.Features.Commands.DealerCommands
                     throw new SelfWaiterException(ExceptionMessages.DealerNotFound);
                 await _dealerRepository.DeleteAsync(dealer);
 
-                await _hybridCache.RemoveByTagAsync([CacheTags.Dealer]);
+                dealer.AddDomainEvent(new DealerChangedEvent()
+                {
+                    Tags = [CacheTags.Dealer]
+                });
 
                 return true;
             }

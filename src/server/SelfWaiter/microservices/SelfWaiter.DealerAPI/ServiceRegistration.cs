@@ -68,7 +68,11 @@ namespace SelfWaiter.DealerAPI
         {
 
             var builder = services.AddFusionCache()
-                .WithDefaultEntryOptions(options => options.Duration = TimeSpan.FromMinutes(10))
+                .WithDefaultEntryOptions(options =>
+                {
+                    options.Duration = TimeSpan.FromMinutes(10);
+                    options.DistributedCacheDuration = TimeSpan.FromMinutes(10);
+                })
                 .WithSerializer(new FusionCacheSystemTextJsonSerializer());
                 
             if (enableRedis)

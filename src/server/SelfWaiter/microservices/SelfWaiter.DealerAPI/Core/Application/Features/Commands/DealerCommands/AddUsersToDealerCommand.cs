@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Hybrid;
-using Microsoft.OpenApi.Extensions;
+using SelfWaiter.DealerAPI.Core.Application.Features.Notifications.DomainEvents;
 using SelfWaiter.DealerAPI.Core.Application.Repositories;
 using SelfWaiter.DealerAPI.Core.Domain.Entities;
 using SelfWaiter.Shared.Core.Application.Utilities;
@@ -13,7 +12,7 @@ namespace SelfWaiter.DealerAPI.Core.Application.Features.Commands.DealerCommands
     {
         public IEnumerable<Guid> UserIds { get; set; }
         public Guid DealerId { get; set; }
-        public class AddUsersToDealerCommandHandler(IDealerRepository _dealerRepository, IUserProfileRepository _userProfileRepository, IUserProfileAndDealerRepository _userProfileAndDealerRepository, HybridCache _hybridCache) : IRequestHandler<AddUsersToDealerCommand, bool>
+        public class AddUsersToDealerCommandHandler(IDealerRepository _dealerRepository, IUserProfileRepository _userProfileRepository, IUserProfileAndDealerRepository _userProfileAndDealerRepository, IMediator _mediator) : IRequestHandler<AddUsersToDealerCommand, bool>
         {
             public async Task<bool> Handle(AddUsersToDealerCommand request, CancellationToken cancellationToken)
             {
@@ -70,7 +69,10 @@ namespace SelfWaiter.DealerAPI.Core.Application.Features.Commands.DealerCommands
                     }));
                 }
 
-                await _hybridCache.RemoveByTagAsync([CacheTags.Dealer]);
+                await _mediator.Publish(new DealerChangedEvent()
+                {
+                    Tags = [CacheTags.Dealer]
+                });
 
                 return true;
             }
