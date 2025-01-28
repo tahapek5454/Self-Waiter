@@ -12,12 +12,7 @@ namespace SelfWaiter.DealerAPI.Core.Application.Features.Commands.CityCommands
         {
             public async Task<bool> Handle(DeleteRangeCityCommand request, CancellationToken cancellationToken)
             {
-                var cities = _cityRepository.Query().Where(x=> request.Ids.Contains(x.Id)).ToList();
-
-                if (cities?.Any() != true)
-                {
-                    return await Task.FromResult(false);
-                }
+                var cities = _cityRepository.Where(x=> request.Ids.Contains(x.Id)).ToList();
 
                 if(cities.Count() != request.Ids.Count())
                 {
