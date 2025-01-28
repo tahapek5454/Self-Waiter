@@ -115,6 +115,43 @@ namespace SelfWaiter.DealerAPI
             return hostBuilder;
         }
 
+        public static IServiceCollection AddDealerHealthChecks(this IServiceCollection services, IConfiguration configuration, bool enableMSSQL = true, bool enableRedis = false, bool enableElasticsearch = false)
+        {
+            var builder = services.AddHealthChecks();
+
+            if (enableMSSQL)
+            {
+                string? connectionString = configuration.GetConnectionString("MSSQL");
+                if (!string.IsNullOrEmpty(connectionString))
+                {
+                    builder.AddSqlServer(connectionString);
+                }
+            }
+
+            if (enableRedis)
+            {
+                string? connectionString = configuration.GetConnectionString("Redis");
+                if (!string.IsNullOrEmpty(connectionString))
+                {
+                    //ConnectionMultiplexer.Connect(connectionString)
+                    builder.AddRedis(connectionString);
+                }
+            }
+
+
+            if (enableElasticsearch) // Just URL HTTP Request and Check
+            {
+                string? connectionString = configuration["URLS:ElasticSearch"];
+
+                if (!string.IsNullOrEmpty(connectionString))
+                {
+                    builder.AddUrlGroup(new Uri(connectionString), name: "elasticsearch", tags: new[] { "elasticsearch" });
+                }
+            }
+
+            return services;
+        }
+
         public static Guid? GetUserIdOrDefault(this ClaimsPrincipal claimsPrincipal, bool IsDevelopment = false)
         {
             if (!IsDevelopment)

@@ -23,6 +23,7 @@ builder.Services.AddDealerService(builder.Configuration);
 
 builder.Services.AddDealerCache(builder.Configuration, enableRedis:false);
 builder.Host.AddDealerLoggerService(enableElasticsearch:false);
+builder.Services.AddDealerHealthChecks(builder.Configuration, enableMSSQL:true, enableRedis: false, enableElasticsearch:false);
 
 var app = builder.Build();
 
@@ -49,6 +50,7 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseHealthChecks("/health");
 app.MapControllers();
 
 ApplyPendigMigration();
