@@ -12,7 +12,7 @@ namespace SelfWaiter.DealerAPI.Core.Application.Features.Commands.DistrictComman
         {
             public async Task<bool> Handle(DeleteRangeDistrictCommand request, CancellationToken cancellationToken)
             {
-                var districts = _districtRepository.Query().Where(x => request.Ids.Contains(x.Id)).ToList();
+                var districts = _districtRepository.Where(x => request.Ids.Contains(x.Id)).ToList();
                 
                 if(districts.Count() != request.Ids.Count())
                 {
