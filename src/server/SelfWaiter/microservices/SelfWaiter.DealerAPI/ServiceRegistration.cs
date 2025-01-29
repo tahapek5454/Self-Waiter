@@ -145,7 +145,8 @@ namespace SelfWaiter.DealerAPI
 
                 if (!string.IsNullOrEmpty(connectionString))
                 {
-                    builder.AddUrlGroup(new Uri(connectionString), name: "elasticsearch", tags: new[] { "elasticsearch" });
+                    builder.AddElasticsearch(connectionString, "elk");
+                    //builder.AddUrlGroup(new Uri(connectionString), name: "elasticsearch", tags: new[] { "elasticsearch" });
                 }
             }
 
