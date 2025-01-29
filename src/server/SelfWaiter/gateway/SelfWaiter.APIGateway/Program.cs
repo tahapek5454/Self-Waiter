@@ -1,20 +1,27 @@
+using Ocelot.DependencyInjection;
+using Ocelot.Middleware;
+
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
-builder.Services.AddOpenApi();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy",
+        builder => builder.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+          );
+});
+
+builder.Configuration.AddJsonFile("ocelot.json", false, true);
+
+builder.Services.AddOcelot();
 
 var app = builder.Build();
 
+app.UseCors("CorsPolicy");
 
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
+await app.UseOcelot();
 
 app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
 
 app.Run();
