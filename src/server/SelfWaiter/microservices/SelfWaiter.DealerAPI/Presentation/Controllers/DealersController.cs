@@ -35,7 +35,7 @@ namespace SelfWaiter.DealerAPI.Presentation.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteRangeDealerCommand([FromBody] DeleteRangeDealerCommand command)
+        public async Task<IActionResult> DeleteRangeDealer([FromBody] DeleteRangeDealerCommand command)
         {
             var r = await _mediator.Send(command);
 
@@ -86,7 +86,7 @@ namespace SelfWaiter.DealerAPI.Presentation.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetDealersByCreatorUserId([FromQuery] GetDealersByCreatorUserIdQuery query)
+        public async Task<IActionResult> GetDealersByCreatorUserId([FromQuery] GetDealersByCreatorUserIdQuery query) //NOSONAR
         {      
             var userId = HttpContext.User.GetUserIdOrDefault(_env.IsDevelopment());
             query.CreatorUserId = userId;
@@ -97,7 +97,7 @@ namespace SelfWaiter.DealerAPI.Presentation.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetDealersByUserId([FromQuery] GetDealersByUserIdQuery query)
+        public async Task<IActionResult> GetDealersByUserId([FromQuery] GetDealersByUserIdQuery query) //NOSONAR
         {
             var userId = HttpContext.User.GetUserIdOrDefault(_env.IsDevelopment());
             query.UserId = userId;

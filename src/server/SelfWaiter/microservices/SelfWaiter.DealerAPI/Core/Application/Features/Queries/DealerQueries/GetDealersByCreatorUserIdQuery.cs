@@ -16,11 +16,12 @@ namespace SelfWaiter.DealerAPI.Core.Application.Features.Queries.DealerQueries
             {
                 string cacheKey = $"dealer-creatorUserId-{request.CreatorUserId}";
 
-                var dealers = await _hybridCache.GetOrCreateAsync(cacheKey, async (cToken) =>
+                Guid? state = request.CreatorUserId;
+                var dealers = await _hybridCache.GetOrCreateAsync(cacheKey, state, async (state, cToken) =>
                 {
                     var dealers = _dealerRepository.Query()
                                 .AsNoTracking()
-                                .Where(x => x.CreatorUserId.Equals(request.CreatorUserId))
+                                .Where(x => x.CreatorUserId.Equals(state))
                                 .Select(x => new DealerDto(x))
                                 .ToList();
 

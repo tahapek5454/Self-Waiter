@@ -23,6 +23,7 @@ namespace SelfWaiter.DealerAPI.Test.Commons
              object? o = new();
             _mediatorMock = new Mock<IMediator>();
             _mediatorMock.Setup(x => x.Send(It.IsAny<object>(), It.IsAny<CancellationToken>())).ReturnsAsync(o);
+            _mediatorMock.Setup(x => x.Publish(It.IsAny<object>(), It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
         }
     }
 }

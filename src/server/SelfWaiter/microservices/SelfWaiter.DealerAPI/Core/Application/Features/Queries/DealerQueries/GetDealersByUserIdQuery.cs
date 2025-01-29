@@ -15,11 +15,12 @@ namespace SelfWaiter.DealerAPI.Core.Application.Features.Queries.DealerQueries
             public async Task<IEnumerable<DealerDto>> Handle(GetDealersByUserIdQuery request, CancellationToken cancellationToken)
             {
                 string cacheKey = $"dealer-userId-{request.UserId}";
-                var dealers = await _hybridCache.GetOrCreateAsync(cacheKey, async (ctoken) =>
+                Guid? state = request.UserId ; 
+                var dealers = await _hybridCache.GetOrCreateAsync(cacheKey, state, async (state,ctoken) =>
                 {
                     var dealers = _dealerRepository.Query()
                                                 .AsNoTracking()
-                                                .Where(x => x.UserProfileAndDealers.Any(y => y.UserProfileId.Equals(request.UserId)))
+                                                .Where(x => x.UserProfileAndDealers.Any(y => y.UserProfileId.Equals(state)))
                                                 .Select(x => new DealerDto(x))
                                                 .ToList();
 

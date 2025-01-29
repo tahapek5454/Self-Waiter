@@ -13,7 +13,7 @@ namespace SelfWaiter.DealerAPI.Core.Application.Features.Commands.DealerCommands
         {
             public async Task<bool> Handle(DeleteRangeDealerCommand request, CancellationToken cancellationToken)
             {
-                var dealers = _dealerRepository.Query().Where(x => request.Ids.Contains(x.Id)).ToList();
+                var dealers = _dealerRepository.Where(x => request.Ids.Contains(x.Id)).ToList();
 
                 if (dealers.Count() != request.Ids.Count())
                     throw new SelfWaiterException(ExceptionMessages.InconsistencyExceptionMessage);
