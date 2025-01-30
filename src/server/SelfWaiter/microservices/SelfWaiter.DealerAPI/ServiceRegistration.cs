@@ -7,6 +7,7 @@ using Elastic.Serilog.Sinks;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.StackExchangeRedis;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using SelfWaiter.DealerAPI.Core.Application.Behaviors;
 using SelfWaiter.DealerAPI.Core.Application.Behaviors.Dispatchers;
 using SelfWaiter.DealerAPI.Core.Application.Repositories;
@@ -124,7 +125,12 @@ namespace SelfWaiter.DealerAPI
                 string? connectionString = configuration.GetConnectionString("MSSQL");
                 if (!string.IsNullOrEmpty(connectionString))
                 {
-                    builder.AddSqlServer(connectionString);
+                    builder.AddSqlServer(
+                            connectionString: connectionString,
+                            name: "MSSQL Check",
+                            failureStatus: HealthStatus.Degraded | HealthStatus.Unhealthy,
+                            tags: new [] {"MSSQL"}
+                        );
                 }
             }
 
@@ -134,18 +140,28 @@ namespace SelfWaiter.DealerAPI
                 if (!string.IsNullOrEmpty(connectionString))
                 {
                     //ConnectionMultiplexer.Connect(connectionString)
-                    builder.AddRedis(connectionString);
+                    builder.AddRedis(
+                            redisConnectionString: connectionString,
+                            name: "Redis Check",
+                            failureStatus: HealthStatus.Degraded | HealthStatus.Unhealthy,
+                            tags: new[] { "Redis" }
+                        );
                 }
             }
 
 
-            if (enableElasticsearch) // Just URL HTTP Request and Check
+            if (enableElasticsearch)
             {
                 string? connectionString = configuration["URLS:ElasticSearch"];
 
                 if (!string.IsNullOrEmpty(connectionString))
                 {
-                    builder.AddElasticsearch(connectionString, "elk");
+                    builder.AddElasticsearch(
+                            elasticsearchUri: connectionString,
+                            name: "ElasticSearch Check",
+                            failureStatus: HealthStatus.Degraded | HealthStatus.Unhealthy,
+                            tags: new[] { "ElasticSearch" }
+                        );
                     //builder.AddUrlGroup(new Uri(connectionString), name: "elasticsearch", tags: new[] { "elasticsearch" });
                 }
             }
