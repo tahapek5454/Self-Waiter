@@ -20,7 +20,7 @@ app.UseHttpsRedirection();
 app.UseHealthChecksUI(options =>
 {
     options.UIPath = "/health-ui";
-    //options.AddCustomStylesheet("health-check-ui.css");
+    options.AddCustomStylesheet("health-check-ui.css");
 });
 
 app.Run();
