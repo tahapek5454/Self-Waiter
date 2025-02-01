@@ -8,6 +8,12 @@ builder.Services.AddHealthChecksUI(settings =>
         settings.AddHealthCheckEndpoint("Dealer Service", dealerEndpoint);
     }
 
+    string? fileEndpoint = $"{builder.Configuration["BaseURL"] ?? string.Empty}{builder.Configuration["ServiceURLS:FileService"] ?? string.Empty}";
+    if (!string.IsNullOrEmpty(fileEndpoint))
+    {
+        settings.AddHealthCheckEndpoint("File Service", fileEndpoint);
+    }
+
     settings.SetEvaluationTimeInSeconds(60);
     settings.SetApiMaxActiveRequests(2);
 

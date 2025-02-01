@@ -1,32 +1,45 @@
 ﻿{
     "Routes": [
-      {
-        //Dealer
-        "DownstreamPathTemplate": "/{url}",
-        "DownstreamScheme": "https",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "localhost",
-            "Port": 7165
-          }
-        ],
-        "UpstreamPathTemplate": "/dealer/public/{url}",
-        "UpstreamHttpMethod": [ "Post", "Get", "Put", "Delete" ]
-      },
-      {
-        //Monitoring
-        "DownstreamPathTemplate": "/{url}",
-        "DownstreamScheme": "https",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "localhost",
-            "Port": 7248
-          }
-        ],
-        "UpstreamPathTemplate": "/monitoring/public/{url}",
-        "UpstreamHttpMethod": [ "Post", "Get", "Put", "Delete" ]
-      }
-        
+        {
+            //Dealer
+            "DownstreamPathTemplate": "/{url}",
+            "DownstreamScheme": "https",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 7165
+                }
+            ],
+            "UpstreamPathTemplate": "/dealer/public/{url}",
+            "UpstreamHttpMethod": [ "Post", "Get", "Put", "Delete" ]
+        },
+        {
+            //File
+            "DownstreamPathTemplate": "/{url}",
+            "DownstreamScheme": "https",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 7047
+                }
+            ],
+            "UpstreamPathTemplate": "/file/public/{url}",
+            "UpstreamHttpMethod": [ "Post", "Get", "Put", "Delete" ]
+        },
+        {
+            //Monitoring
+            "DownstreamPathTemplate": "/{url}",
+            "DownstreamScheme": "https",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 7248
+                }
+            ],
+            "UpstreamPathTemplate": "/monitoring/public/{url}",
+            "UpstreamHttpMethod": [ "Post", "Get", "Put", "Delete" ]
+        }
+
 
     ],
     "GlobalConfiguration": {
