@@ -8,11 +8,7 @@
 
 
   <ItemGroup>
-    <Folder Include="Core\Domain\Enums\" />
-  </ItemGroup>
-
-
-  <ItemGroup>
+    <PackageReference Include="MassTransit.RabbitMQ" Version="8.3.6" />
     <PackageReference Include="System.Linq.Dynamic.Core" Version="1.6.0" />
   </ItemGroup>
 

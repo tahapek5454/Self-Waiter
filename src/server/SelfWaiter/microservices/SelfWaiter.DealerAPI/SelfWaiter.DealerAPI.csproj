@@ -47,4 +47,8 @@
     <ProjectReference Include="..\..\shared\SelfWaiter.Shared\SelfWaiter.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Infrastructure\InnerInfrastructure\Consumers\" />
+  </ItemGroup>
+
 </Project>
