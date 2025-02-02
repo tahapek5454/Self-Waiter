@@ -5,6 +5,7 @@ using SelfWaiter.DealerAPI.Core.Application.Features.Commands.CountryCommands;
 using SelfWaiter.DealerAPI.Core.Application.Features.Commands.DealerCommands;
 using SelfWaiter.DealerAPI.Core.Application.Features.Commands.DistrictCommands;
 using SelfWaiter.DealerAPI.Core.Domain.Entities;
+using SelfWaiter.Shared.Core.Application.IntegrationEvents.DealerImageFileChangedEvents;
 
 namespace SelfWaiter.DealerAPI.Core.Application.Mapper
 {
@@ -34,6 +35,11 @@ namespace SelfWaiter.DealerAPI.Core.Application.Mapper
 
             CreateMap<Dealer, DealerDto>();
             CreateMap<CreateDealerCommand, Dealer>();
+            CreateMap<DealerImage, DealerImageDto>();
+            CreateMap<DealerImageFileChangedEvent, DealerImage>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.FileId));
+            CreateMap<DealerImageFileChangedEvent, DealerImageFileReceivedEvent>();
+            CreateMap<DealerImageFileChangedEvent, DealerImageFileNotReceivedEvent>();
 
             #endregion
 

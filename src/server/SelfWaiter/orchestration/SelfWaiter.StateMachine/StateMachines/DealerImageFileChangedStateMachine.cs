@@ -11,10 +11,12 @@ namespace SelfWaiter.StateMachine.StateMachines
         public Event<DealerImageFileChangedStartedEvent> DealerImageFileChangedStartedEvent { get; set; }
         public Event<DealerImageFileReceivedEvent> DealerImageFileReceivedEvent { get; set; }
         public Event<DealerImageFileNotReceivedEvent> DealerImageFileNotReceivedEvent { get; set; }
+        public Event<DealerImageFileRollbackReceivedEvent> DealerImageFileRollbackReceivedEvent { get; set; }
 
         public State DealerImageFileChanged { get; set; }
         public State DealerImageFileReceived { get; set; }
         public State DealerImageFileNotReceived { get; set; }
+        public State DealerImageFileRollbackReceived { get; set; }
 
 
         private readonly ILogger<DealerImageFileChangedStateMachine> _logger;
@@ -26,7 +28,7 @@ namespace SelfWaiter.StateMachine.StateMachines
 
             Event(() => DealerImageFileChangedStartedEvent, (instance) =>
             {
-                instance.CorrelateBy(db => db.FileName, @event => @event.Message.FileName)
+                instance.CorrelateBy<Guid>(db => db.FileId, @event => @event.Message.FileId)
                 .SelectId(e => Guid.NewGuid());
             });
 
@@ -35,7 +37,12 @@ namespace SelfWaiter.StateMachine.StateMachines
                 instance.CorrelateById(@event => @event.Message.CorrelationId);
             });
 
-            Event(() => DealerImageFileReceivedEvent, (instance) =>
+            Event(() => DealerImageFileNotReceivedEvent, (instance) =>
+            {
+                instance.CorrelateById(@event => @event.Message.CorrelationId);
+            });
+
+            Event(() => DealerImageFileRollbackReceivedEvent, (instance) =>
             {
                 instance.CorrelateById(@event => @event.Message.CorrelationId);
             });
@@ -43,71 +50,140 @@ namespace SelfWaiter.StateMachine.StateMachines
 
             Initially(
                     When(DealerImageFileChangedStartedEvent)
-                    .Then(context =>
-                        {
-                            context.Instance.Path = context.Message.Path;
-                            context.Instance.FileName = context.Message.FileName;
-                            context.Instance.FileId = context.Message.FileId;
-                            context.Instance.OperationType = context.Message.OperationType; 
-                            context.Instance.Storage = context.Message.Storage;
-                            context.Instance.RelationId = context.Message.RelationId;
-                        }
-                    )
-                    .Then(context =>
-                    {
-                        var serializedevent = JsonSerializer.Serialize(context.Message);
-                        _logger.LogInformation("{stateMachineName} - instance saved {eventInstance} with correlationId : {correlationId}", nameof(DealerImageFileChangedStateMachine), serializedevent, context.Instance.CorrelationId);
-                    })
+                    .Then(SaveInstanceData)
+                    .Then(LogInitialInstanceSaved)
                     .TransitionTo(DealerImageFileChanged)
-                    .Send(new Uri($"queue:{RabbitMQSettings.Dealer_DealerImageFileChangedQueue}"), context => new DealerImageFileChangedEvent(context.Instance.CorrelationId)
-                        {
-                            FileId = context.Message.FileId,
-                            FileName = context.Message.FileName,
-                            OperationType = context.Message.OperationType,
-                            Path = context.Message.Path,
-                            RelationId = context.Message.RelationId,
-                            Storage = context.Message.Storage
-                        }
-                    )
-                    .Then(context =>
-                    {
-                        _logger.LogInformation("{stateMachineName} - {stateEvent} send to {queueName} with correlationId : {correlationId}", nameof(DealerImageFileChangedStateMachine), nameof(DealerImageFileChangedEvent) , RabbitMQSettings.Dealer_DealerImageFileChangedQueue, context.Instance.CorrelationId);
-                    })
+                    .Send(context => new Uri($"queue:{RabbitMQSettings.Dealer_DealerImageFileChangedQueue}"), CreateDealerImageFileChangedEvent)
+                    .Then(LogInitialEventSent)
             );
 
 
 
             During(
                 DealerImageFileChanged,
+
                 When(DealerImageFileReceivedEvent)
                 .TransitionTo(DealerImageFileReceived)
-                .Then((context) =>
-                {
-                    _logger.LogInformation("{stateMachineName} - successfully finished with correlationId : {correlationId}", nameof(DealerImageFileChangedStateMachine), context.Instance.CorrelationId);
-                })
+                .Then(LogSuccessfulCompletion)
                 .Finalize(),
 
                 When(DealerImageFileNotReceivedEvent)
                 .TransitionTo(DealerImageFileNotReceived)
-                .Send(new Uri($"queue:{RabbitMQSettings.Dealer_DealerImageFileChangedQueue}"), context => new DealerImageFileNotReceivedEvent(context.Instance.CorrelationId)
-                    {
-                        FileId= context.Message.FileId,
-                        FileName= context.Message.FileName,
-                        OperationType= context.Message.OperationType,
-                        Path= context.Message.Path,
-                        RelationId= context.Message.RelationId,
-                        Storage = context.Message.Storage
-                    }
-                )
-                .Then(context =>
-                {
-                    var serializedevent = JsonSerializer.Serialize(context.Instance);
-                    _logger.LogError("{stateMachineName} - instance error DealerImageFileNotReceivedEvent {eventInstance} with correlationId : {correlationId}", nameof(DealerImageFileChangedStateMachine), serializedevent, context.Instance.CorrelationId);
-                })
+                .Send(context => new Uri($"queue:{RabbitMQSettings.File_DealerImageFileNotReceivedQueue}"),  CreateDealerImageFileRollbackEvent)
+                .Then(LogFileNotReceivedError)     
             );
 
 
+
+            During(
+                DealerImageFileNotReceived,
+
+                When(DealerImageFileRollbackReceivedEvent)
+                .TransitionTo(DealerImageFileRollbackReceived)
+                .Then(LogSuccessfullyRollback)
+                .Finalize()
+            );
+
             SetCompletedWhenFinalized();
         }
+
+        #region Initial 
+
+        private void SaveInstanceData(BehaviorContext<DealerImageFileChangedStateInstance, DealerImageFileChangedStartedEvent> context)
+        {
+            context.Instance.Path = context.Message.Path;
+            context.Instance.FileName = context.Message.FileName;
+            context.Instance.FileId = context.Message.FileId;
+            context.Instance.OperationType = context.Message.OperationType;
+            context.Instance.Storage = context.Message.Storage;
+            context.Instance.RelationId = context.Message.RelationId;
+        }
+
+        private void LogInitialInstanceSaved(BehaviorContext<DealerImageFileChangedStateInstance, DealerImageFileChangedStartedEvent> context)
+        {
+            var serializedEvent = JsonSerializer.Serialize(context.Message);
+            _logger.LogInformation(
+                "{stateMachineName} - instance saved {eventInstance} with correlationId : {correlationId}",
+                nameof(DealerImageFileChangedStateMachine),
+                serializedEvent,
+                context.Instance.CorrelationId
+            );
+        }
+
+          
+        private  DealerImageFileChangedEvent CreateDealerImageFileChangedEvent(BehaviorContext<DealerImageFileChangedStateInstance, DealerImageFileChangedStartedEvent> context) =>
+            new DealerImageFileChangedEvent(context.Instance.CorrelationId)
+            {
+                FileId = context.Message.FileId,
+                FileName = context.Message.FileName,
+                OperationType = context.Message.OperationType,
+                Path = context.Message.Path,
+                RelationId = context.Message.RelationId,
+                Storage = context.Message.Storage
+            };
+
+        private void LogInitialEventSent(BehaviorContext<DealerImageFileChangedStateInstance, DealerImageFileChangedStartedEvent> context)
+        {
+            _logger.LogInformation(
+                "{stateMachineName} - {stateEvent} sent to {queueName} with correlationId : {correlationId}",
+                nameof(DealerImageFileChangedStateMachine),
+                nameof(DealerImageFileChangedEvent),
+                RabbitMQSettings.Dealer_DealerImageFileChangedQueue,
+                context.Instance.CorrelationId
+            );
+        }
+
+        #endregion
+
+        #region DealerImageFileChanged -> DealerImageFileReceivedEvent
+        private void LogSuccessfulCompletion(BehaviorContext<DealerImageFileChangedStateInstance, DealerImageFileReceivedEvent> context)
+        {
+            _logger.LogInformation(
+                "{stateMachineName} - successfully finished with correlationId : {correlationId}",
+                nameof(DealerImageFileChangedStateMachine),
+                context.Instance.CorrelationId
+            );
+        }
+        #endregion
+
+        #region DealerImageFileChanged -> DealerImageFileNotReceivedEvent
+
+        private  DealerImageFileRollbackEvent CreateDealerImageFileRollbackEvent(BehaviorContext<DealerImageFileChangedStateInstance, DealerImageFileNotReceivedEvent> context) =>
+            new DealerImageFileRollbackEvent(context.Instance.CorrelationId)
+            {
+                FileId = context.Message.FileId,
+                FileName = context.Message.FileName,
+                OperationType = context.Message.OperationType,
+                Path = context.Message.Path,
+                RelationId = context.Message.RelationId,
+                Storage = context.Message.Storage
+            };
+
+        private void LogFileNotReceivedError(BehaviorContext<DealerImageFileChangedStateInstance, DealerImageFileNotReceivedEvent> context)
+        {
+            var serializedEvent = JsonSerializer.Serialize(context.Instance);
+            _logger.LogError(
+                "{stateMachineName} - instance error DealerImageFileNotReceivedEvent {eventInstance} with correlationId : {correlationId}",
+                nameof(DealerImageFileChangedStateMachine),
+                serializedEvent,
+                context.Instance.CorrelationId
+            );
+        }
+
+        #endregion
+
+        #region DealerImageFileNotReceived -> DealerImageFileRollbackReceivedEvent
+
+        private void LogSuccessfullyRollback(BehaviorContext<DealerImageFileChangedStateInstance, DealerImageFileRollbackReceivedEvent> context)
+        {
+            _logger.LogInformation(
+                "{stateMachineName} - successfully rollback with correlationId : {correlationId}",
+                nameof(DealerImageFileChangedStateMachine),
+                context.Instance.CorrelationId
+            );
+        }
+
+        #endregion
+
     }
 }

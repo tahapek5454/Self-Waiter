@@ -7,11 +7,11 @@ using SelfWaiter.Shared.Core.Domain.Enums;
 namespace SelfWaiter.Shared.Core.Application.IntegrationEvents.DealerImageFileChangedEvents
 {
     [QueueName(RabbitMQSettings.StateMachine_DealerImageFileChangedQueue)]
-    public class DealerImageFileReceivedEvent : CorrelatedBy<Guid>, IIntegrationEvent
+    public class DealerImageFileRollbackReceivedEvent : CorrelatedBy<Guid>, IIntegrationEvent
     {
         public Guid CorrelationId { get; }
 
-        public DealerImageFileReceivedEvent(Guid correlationId, Guid fileId = default, Guid relationId = default, string fileName = null, string path = null, string storage = null, OpeartionTypeEnum operationType = default)
+        public DealerImageFileRollbackReceivedEvent(Guid correlationId, Guid fileId = default, Guid relationId = default, string fileName = null, string path = null, string storage = null, OpeartionTypeEnum operationType = default)
         {
             CorrelationId = correlationId;
             FileId = fileId;

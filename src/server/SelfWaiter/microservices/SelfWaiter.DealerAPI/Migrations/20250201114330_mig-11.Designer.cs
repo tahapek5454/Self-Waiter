@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SelfWaiter.DealerAPI.Infrastructure.Persistence.DbContexts.EfCoreContext;
 
@@ -11,9 +12,11 @@ using SelfWaiter.DealerAPI.Infrastructure.Persistence.DbContexts.EfCoreContext;
 namespace SelfWaiter.DealerAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250201114330_mig-11")]
+    partial class mig11
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,7 +59,7 @@ namespace SelfWaiter.DealerAPI.Migrations
                         .IsUnique()
                         .IsDescending();
 
-                    b.ToTable("Cities", (string)null);
+                    b.ToTable("Cities");
 
                     b.HasData(
                         new
@@ -98,7 +101,7 @@ namespace SelfWaiter.DealerAPI.Migrations
                         .IsUnique()
                         .IsDescending();
 
-                    b.ToTable("Countries", (string)null);
+                    b.ToTable("Countries");
 
                     b.HasData(
                         new
@@ -166,7 +169,7 @@ namespace SelfWaiter.DealerAPI.Migrations
                         .IsUnique()
                         .HasFilter("[PhoneNumber] IS NOT NULL");
 
-                    b.ToTable("Dealers", (string)null);
+                    b.ToTable("Dealers");
                 });
 
             modelBuilder.Entity("SelfWaiter.DealerAPI.Core.Domain.Entities.DealerImage", b =>
@@ -203,7 +206,7 @@ namespace SelfWaiter.DealerAPI.Migrations
 
                     b.HasIndex("RelationId");
 
-                    b.ToTable("DealerImages", (string)null);
+                    b.ToTable("DealerImages");
                 });
 
             modelBuilder.Entity("SelfWaiter.DealerAPI.Core.Domain.Entities.District", b =>
@@ -240,7 +243,7 @@ namespace SelfWaiter.DealerAPI.Migrations
                         .IsUnique()
                         .IsDescending();
 
-                    b.ToTable("Districts", (string)null);
+                    b.ToTable("Districts");
 
                     b.HasData(
                         new
@@ -316,7 +319,7 @@ namespace SelfWaiter.DealerAPI.Migrations
                     b.HasIndex("UserName")
                         .IsUnique();
 
-                    b.ToTable("UserProfile", (string)null);
+                    b.ToTable("UserProfile");
 
                     b.HasData(
                         new
@@ -377,7 +380,7 @@ namespace SelfWaiter.DealerAPI.Migrations
                     b.HasIndex("DealerId", "UserProfileId", "IsValid")
                         .IsUnique();
 
-                    b.ToTable("UserProfileAndDealers", (string)null);
+                    b.ToTable("UserProfileAndDealers");
                 });
 
             modelBuilder.Entity("SelfWaiter.DealerAPI.Core.Domain.Entities.City", b =>

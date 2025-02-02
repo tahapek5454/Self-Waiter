@@ -1,9 +1,12 @@
 ﻿using MassTransit;
+using SelfWaiter.Shared.Core.Application.Attributes;
 using SelfWaiter.Shared.Core.Application.IntegrationEvents.Abstractions;
+using SelfWaiter.Shared.Core.Application.Utilities.Consts;
 using SelfWaiter.Shared.Core.Domain.Enums;
 
 namespace SelfWaiter.Shared.Core.Application.IntegrationEvents.DealerImageFileChangedEvents
 {
+    [QueueName(RabbitMQSettings.StateMachine_DealerImageFileChangedQueue)]
     public class DealerImageFileNotReceivedEvent : CorrelatedBy<Guid>, IIntegrationEvent
     {
         public Guid CorrelationId { get; }

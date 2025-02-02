@@ -42,7 +42,7 @@ namespace SelfWaiter.FileAPI.Infrastructure.InnerInfrastructure.Services.Storage
 
                 _ = await CopyFileAsync(Path.Combine(uploadPath, fileNewName), file);
 
-                datas.Add((fileNewName, Path.Combine(pathOrContainerName, fileNewName)));
+                datas.Add((fileNewName, pathOrContainerName));
 
             }
 

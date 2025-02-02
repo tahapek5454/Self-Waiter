@@ -14,7 +14,6 @@ namespace SelfWaiter.DealerAPI.Core.Application.Dtos
             Name = dealer.Name;
             Adress = dealer.Adress;
             PhoneNumber = dealer.PhoneNumber;
-            ImageUrl = dealer.ImageUrl;
             CreatorUserId = dealer.CreatorUserId;
             DistrictId = dealer.DistrictId;
         }
@@ -23,7 +22,6 @@ namespace SelfWaiter.DealerAPI.Core.Application.Dtos
         public string Name { get; set; }
         public string? Adress { get; set; }
         public string? PhoneNumber { get; set; }
-        public string? ImageUrl { get; set; }
         public Guid? CreatorUserId { get; set; }
         public virtual UserProfileDto? CreatorUser { get; set; }
         public Guid DistrictId { get; set; }

@@ -5,6 +5,7 @@ using Elastic.Ingest.Elasticsearch;
 using Elastic.Ingest.Elasticsearch.DataStreams;
 using Elastic.Serilog.Sinks;
 using FluentValidation;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -12,9 +13,12 @@ using SelfWaiter.DealerAPI.Core.Application.Behaviors;
 using SelfWaiter.DealerAPI.Core.Application.Behaviors.Dispatchers;
 using SelfWaiter.DealerAPI.Core.Application.Repositories;
 using SelfWaiter.DealerAPI.Infrastructure.ExceptionHandling;
+using SelfWaiter.DealerAPI.Infrastructure.InnerInfrastructure.Consumers.DealerImageFileChangedConsumers;
 using SelfWaiter.DealerAPI.Infrastructure.Persistence.DbContexts.EfCoreContext;
 using SelfWaiter.DealerAPI.Infrastructure.Persistence.Repositories;
+using SelfWaiter.Shared.Core.Application.Services;
 using SelfWaiter.Shared.Core.Application.Utilities.Consts;
+using SelfWaiter.Shared.Infrastructure.InnerInfrastructure.Services;
 using Serilog;
 using ZiggyCreatures.Caching.Fusion;
 using ZiggyCreatures.Caching.Fusion.Serialization.SystemTextJson;
@@ -61,6 +65,37 @@ namespace SelfWaiter.DealerAPI
             services.AddExceptionHandler<SelfWaiterDealerExceptionHandler>();
             services.AddExceptionHandler<DealerExceptionHandler>();
             services.AddProblemDetails();
+            #endregion
+
+            #region MassTransit
+
+            services.AddMassTransit(configure =>
+            {
+
+                configure.AddConsumer<DealerImageFileChangedEventConsumer>();
+                configure.AddConsumer<DealerImageFileChangedEventFaultConsumer>();
+
+
+                configure.UsingRabbitMq((context, configurator) =>
+                {
+                    configurator.Host(configuration.GetConnectionString("RabbitMQ"));
+
+                    configurator.ReceiveEndpoint(RabbitMQSettings.Dealer_DealerImageFileChangedQueue, e =>
+                    {
+                        e.ConfigureConsumer<DealerImageFileChangedEventConsumer>(context);
+                        e.DiscardSkippedMessages();
+                    });
+
+                    configurator.ReceiveEndpoint(RabbitMQSettings.Dealer_DealerImageFileChangedQueueError, e =>
+                    {
+                        e.ConfigureConsumer<DealerImageFileChangedEventFaultConsumer>(context);
+                        e.DiscardSkippedMessages();
+                    });
+                });
+            });
+
+            services.AddScoped<IIntegrationBus, IntegrationBus>();
+
             #endregion
             return services;
         }

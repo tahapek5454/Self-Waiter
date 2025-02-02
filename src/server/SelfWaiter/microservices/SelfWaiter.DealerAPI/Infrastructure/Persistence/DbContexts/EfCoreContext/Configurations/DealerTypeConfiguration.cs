@@ -35,6 +35,12 @@ namespace SelfWaiter.DealerAPI.Infrastructure.Persistence.DbContexts.EfCoreConte
                 .HasForeignKey(d => d.CreatorUserId)
                 .OnDelete(DeleteBehavior.SetNull);
 
+
+            builder
+                .HasMany(x => x.DealerImages)
+                .WithOne(y => y.Dealer)
+                .HasForeignKey(dealerImage => dealerImage.RelationId);
+
         }
 
         private IEnumerable<Dealer> SeedDatas()

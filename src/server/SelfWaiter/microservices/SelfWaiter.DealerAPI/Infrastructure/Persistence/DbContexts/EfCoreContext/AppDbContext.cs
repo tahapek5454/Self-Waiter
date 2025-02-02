@@ -16,6 +16,7 @@ namespace SelfWaiter.DealerAPI.Infrastructure.Persistence.DbContexts.EfCoreConte
         public DbSet<City> Cities { get; set; }
         public DbSet<District> Districts { get; set; }
         public DbSet<Dealer> Dealers { get; set; }
+        public DbSet<DealerImage> DealerImages { get; set; }
         public DbSet<UserProfileAndDealer> UserProfileAndDealers { get; set; }
         public DbSet<UserProfile> UserProfile { get; set; }
 

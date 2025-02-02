@@ -15,7 +15,7 @@ builder.Services.AddMassTransit(configure =>
     {
         options.AddDbContext<DbContext, SelfWaiterDbContext>((provider, _builder) =>
         {
-            _builder.UseSqlServer(builder.Configuration.GetConnectionString("MSSQL"));
+            _builder.UseSqlServer(builder.Configuration.GetConnectionString("MSSQL")); 
         });
     });
 

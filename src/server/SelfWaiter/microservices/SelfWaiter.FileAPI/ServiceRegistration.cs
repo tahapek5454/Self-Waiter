@@ -3,6 +3,7 @@ using Elastic.Ingest.Elasticsearch;
 using Elastic.Ingest.Elasticsearch.DataStreams;
 using Elastic.Serilog.Sinks;
 using FluentValidation;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using SelfWaiter.FileAPI.Core.Application.Behaviors;
@@ -10,10 +11,13 @@ using SelfWaiter.FileAPI.Core.Application.Behaviors.Dispatchers;
 using SelfWaiter.FileAPI.Core.Application.Repositories;
 using SelfWaiter.FileAPI.Core.Application.Services.Storage;
 using SelfWaiter.FileAPI.Infrastructure.ExceptionHandling;
+using SelfWaiter.FileAPI.Infrastructure.InnerInfrastructure.Consumers.DealerImageFileChangedConsumers;
 using SelfWaiter.FileAPI.Infrastructure.InnerInfrastructure.Services.Storages;
 using SelfWaiter.FileAPI.Infrastructure.Persistence.DbContexts.EfCoreContext;
 using SelfWaiter.FileAPI.Infrastructure.Persistence.Repositories;
+using SelfWaiter.Shared.Core.Application.Services;
 using SelfWaiter.Shared.Core.Application.Utilities.Consts;
+using SelfWaiter.Shared.Infrastructure.InnerInfrastructure.Services;
 using Serilog;
 using System.Reflection;
 using System.Security.Claims;
@@ -60,6 +64,28 @@ namespace SelfWaiter.FileAPI
             services.AddExceptionHandler<SelfWaiterFileExceptionHandler>();
             services.AddExceptionHandler<FileExceptionHandler>();
             services.AddProblemDetails();
+            #endregion
+
+            #region MassTransit
+            services.AddMassTransit(configure =>
+            {
+
+                configure.AddConsumer<DealerImageFileRollbackEventConsumer>();
+
+
+                configure.UsingRabbitMq((context, configurator) =>
+                {
+                    configurator.Host(configuration.GetConnectionString("RabbitMQ"));
+
+                    configurator.ReceiveEndpoint(RabbitMQSettings.File_DealerImageFileNotReceivedQueue, e =>
+                    {
+                        e.ConfigureConsumer<DealerImageFileRollbackEventConsumer>(context);
+                        e.DiscardSkippedMessages();
+                    });
+                });
+            });
+
+            services.AddScoped<IIntegrationBus, IntegrationBus>();
             #endregion
 
             return services;
