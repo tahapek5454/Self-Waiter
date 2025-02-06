@@ -26,11 +26,27 @@ const vuetify = createVuetify({
       },
   })
 
+ // Toast
+ import Vue3Toastify, { type ToastContainerOptions } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
 // App.vue
 import App from './App.vue'
 
 const app = createApp(App);
 
 app.use(vuetify)
+
+app.use(
+  Vue3Toastify,
+  {
+    autoClose: 3000,
+    position: 'top-right',
+    closeButton: true,
+    theme: 'light',
+    closeOnClick: true,
+    multiple: true,
+  } as ToastContainerOptions,
+);
 
 app.mount('#app')
