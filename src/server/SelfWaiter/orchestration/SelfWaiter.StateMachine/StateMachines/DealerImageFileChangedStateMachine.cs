@@ -2,6 +2,7 @@
 using MassTransit;
 using SelfWaiter.Shared.Core.Application.IntegrationEvents.DealerImageFileChangedEvents;
 using SelfWaiter.Shared.Core.Application.Utilities.Consts;
+using SelfWaiter.Shared.Core.Domain.Enums;
 using SelfWaiter.StateMachine.StateInstances;
 
 namespace SelfWaiter.StateMachine.StateMachines
@@ -12,11 +13,13 @@ namespace SelfWaiter.StateMachine.StateMachines
         public Event<DealerImageFileReceivedEvent> DealerImageFileReceivedEvent { get; set; }
         public Event<DealerImageFileNotReceivedEvent> DealerImageFileNotReceivedEvent { get; set; }
         public Event<DealerImageFileRollbackReceivedEvent> DealerImageFileRollbackReceivedEvent { get; set; }
+        public Event<DealerImageFileDeleteReceivedEvent> DealerImageFileDeleteReceivedEvent { get; set; }
 
         public State DealerImageFileChanged { get; set; }
         public State DealerImageFileReceived { get; set; }
         public State DealerImageFileNotReceived { get; set; }
         public State DealerImageFileRollbackReceived { get; set; }
+        public State DealerImageFileDeleted { get; set; }
 
 
         private readonly ILogger<DealerImageFileChangedStateMachine> _logger;
@@ -63,16 +66,25 @@ namespace SelfWaiter.StateMachine.StateMachines
                 DealerImageFileChanged,
 
                 When(DealerImageFileReceivedEvent)
-                .TransitionTo(DealerImageFileReceived)
-                .Then(LogSuccessfulCompletion)
-                .Finalize(),
+                    .IfElse(context => context.Message.OperationType == OpeartionTypeEnum.Delete,
+                        thenBinder => thenBinder
+                            .Send(context => new Uri($"queue:{RabbitMQSettings.File_DealerImageFileDeleteQueue}"), CreateDealerImageFileDeleteEvent)
+                            .Then(LogDeleteOperation)
+                            .TransitionTo(DealerImageFileDeleted),
+                        elseBinder => elseBinder
+                            .Then(LogSuccessfulCompletion)
+                            .Finalize()),
 
                 When(DealerImageFileNotReceivedEvent)
-                .TransitionTo(DealerImageFileNotReceived)
-                .Send(context => new Uri($"queue:{RabbitMQSettings.File_DealerImageFileNotReceivedQueue}"),  CreateDealerImageFileRollbackEvent)
-                .Then(LogFileNotReceivedError)     
+                .IfElse(context => context.Message.OperationType == OpeartionTypeEnum.Delete,
+                        thenBinder => thenBinder
+                            .Then(LogFileNotReceivedError)
+                            .Finalize(),
+                         elseBinder => elseBinder
+                            .TransitionTo(DealerImageFileNotReceived)
+                            .Send(context => new Uri($"queue:{RabbitMQSettings.File_DealerImageFileNotReceivedQueue}"),  CreateDealerImageFileRollbackEvent)
+                            .Then(LogFileNotReceivedError))  
             );
-
 
 
             During(
@@ -82,6 +94,17 @@ namespace SelfWaiter.StateMachine.StateMachines
                 .TransitionTo(DealerImageFileRollbackReceived)
                 .Then(LogSuccessfullyRollback)
                 .Finalize()
+            );
+
+
+            During(
+                DealerImageFileDeleted,
+
+                When(DealerImageFileDeleteReceivedEvent)
+                .TransitionTo(DealerImageFileRollbackReceived)
+                .Then(LogSuccessfullyDelted)
+                .Finalize()
+
             );
 
             SetCompletedWhenFinalized();
@@ -135,7 +158,7 @@ namespace SelfWaiter.StateMachine.StateMachines
 
         #endregion
 
-        #region DealerImageFileChanged -> DealerImageFileReceivedEvent
+        #region DealerImageFileChanged -> DealerImageFileReceivedEvent -> Type Create
         private void LogSuccessfulCompletion(BehaviorContext<DealerImageFileChangedStateInstance, DealerImageFileReceivedEvent> context)
         {
             _logger.LogInformation(
@@ -146,9 +169,31 @@ namespace SelfWaiter.StateMachine.StateMachines
         }
         #endregion
 
+        #region #region DealerImageFileChanged -> DealerImageFileReceivedEvent -> Type Delete
+        private DealerImageFileDeleteEvent CreateDealerImageFileDeleteEvent(BehaviorContext<DealerImageFileChangedStateInstance, DealerImageFileReceivedEvent> context) =>
+            new DealerImageFileDeleteEvent(context.Instance.CorrelationId)
+            {
+                FileId = context.Message.FileId,
+                FileName = context.Message.FileName,
+                OperationType = context.Message.OperationType,
+                Path = context.Message.Path,
+                RelationId = context.Message.RelationId,
+                Storage = context.Message.Storage
+            };
+
+        private void LogDeleteOperation(BehaviorContext<DealerImageFileChangedStateInstance, DealerImageFileReceivedEvent> context)
+        {
+            _logger.LogInformation(
+                "{stateMachineName} - delete operation triggered with correlationId : {correlationId}",
+                nameof(DealerImageFileChangedStateMachine),
+                context.Instance.CorrelationId
+            );
+        }
+        #endregion
+
         #region DealerImageFileChanged -> DealerImageFileNotReceivedEvent
 
-        private  DealerImageFileRollbackEvent CreateDealerImageFileRollbackEvent(BehaviorContext<DealerImageFileChangedStateInstance, DealerImageFileNotReceivedEvent> context) =>
+        private DealerImageFileRollbackEvent CreateDealerImageFileRollbackEvent(BehaviorContext<DealerImageFileChangedStateInstance, DealerImageFileNotReceivedEvent> context) =>
             new DealerImageFileRollbackEvent(context.Instance.CorrelationId)
             {
                 FileId = context.Message.FileId,
@@ -178,6 +223,20 @@ namespace SelfWaiter.StateMachine.StateMachines
         {
             _logger.LogInformation(
                 "{stateMachineName} - successfully rollback with correlationId : {correlationId}",
+                nameof(DealerImageFileChangedStateMachine),
+                context.Instance.CorrelationId
+            );
+        }
+
+        #endregion
+
+
+        #region DealerImageFileDeleted -> DealerImageFileDeleteReceivedEvent
+
+        private void LogSuccessfullyDelted(BehaviorContext<DealerImageFileChangedStateInstance, DealerImageFileDeleteReceivedEvent> context)
+        {
+            _logger.LogInformation(
+                "{stateMachineName} - successfully deleted with correlationId : {correlationId}",
                 nameof(DealerImageFileChangedStateMachine),
                 context.Instance.CorrelationId
             );

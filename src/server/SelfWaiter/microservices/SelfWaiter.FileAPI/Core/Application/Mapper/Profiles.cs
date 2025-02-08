@@ -12,6 +12,7 @@ namespace SelfWaiter.FileAPI.Core.Application.Mapper
             #region DealerImageFile
             CreateMap<DealerImageFile, DealerImageFileDto>();
             CreateMap<DealerImageFileRollbackEvent, DealerImageFileRollbackReceivedEvent>();
+            CreateMap<DealerImageFileDeleteEvent, DealerImageFileDeleteReceivedEvent>();
             #endregion
 
         }

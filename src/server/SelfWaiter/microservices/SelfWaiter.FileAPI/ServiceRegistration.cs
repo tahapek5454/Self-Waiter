@@ -71,6 +71,7 @@ namespace SelfWaiter.FileAPI
             {
 
                 configure.AddConsumer<DealerImageFileRollbackEventConsumer>();
+                configure.AddConsumer<DealerImageFileDeleteEventConsumer>();
 
 
                 configure.UsingRabbitMq((context, configurator) =>
@@ -80,6 +81,12 @@ namespace SelfWaiter.FileAPI
                     configurator.ReceiveEndpoint(RabbitMQSettings.File_DealerImageFileNotReceivedQueue, e =>
                     {
                         e.ConfigureConsumer<DealerImageFileRollbackEventConsumer>(context);
+                        e.DiscardSkippedMessages();
+                    });
+
+                    configurator.ReceiveEndpoint(RabbitMQSettings.File_DealerImageFileDeleteQueue, e =>
+                    {
+                        e.ConfigureConsumer<DealerImageFileDeleteEventConsumer>(context);
                         e.DiscardSkippedMessages();
                     });
                 });
