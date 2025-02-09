@@ -39,6 +39,9 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
 
+// Router
+import router from './routers/router';
+
 const app = createApp(App);
 
 app.use(vuetify)
@@ -55,7 +58,8 @@ app.use(
   } as ToastContainerOptions,
 );
 
-
 app.use(pinia)
+
+app.use(router)
 
 app.mount('#app')

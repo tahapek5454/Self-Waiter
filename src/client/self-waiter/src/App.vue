@@ -21,7 +21,8 @@ const loading = () => {
 <template>
   <div>
     <Spinner />
-    <div class="tw-flex tw-flex-col tw-space-y-4 tw-h-screen tw-justify-center tw-items-center">
+    <router-view></router-view>
+    <!-- <div class="tw-flex tw-flex-col tw-space-y-4 tw-h-screen tw-justify-center tw-items-center">
       <v-btn @click="loading">
         Loading...
       </v-btn>
@@ -29,7 +30,7 @@ const loading = () => {
         Toast
       </v-btn>
 
-    </div>
+    </div> -->
   </div>
 
 </template>
