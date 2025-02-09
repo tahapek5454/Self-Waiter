@@ -27,11 +27,17 @@ const vuetify = createVuetify({
   })
 
  // Toast
- import Vue3Toastify, { type ToastContainerOptions } from 'vue3-toastify';
+import Vue3Toastify, { type ToastContainerOptions } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 
 // App.vue
 import App from './App.vue'
+
+// Store
+import { createPinia } from 'pinia'
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+const pinia = createPinia()
+pinia.use(piniaPluginPersistedstate)
 
 const app = createApp(App);
 
@@ -48,5 +54,8 @@ app.use(
     multiple: true,
   } as ToastContainerOptions,
 );
+
+
+app.use(pinia)
 
 app.mount('#app')

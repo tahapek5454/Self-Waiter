@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { spinnerStore } from './components/spinners/SpinnerState';
 import Spinner from './components/spinners/Spinner.vue';
 import { toast } from 'vue3-toastify';
+import { useSpinnerStore } from './stores/spinnerStores/SpinnerStore';
 
+const spinnerStore = useSpinnerStore();
 const notify = () => {
   toast.info('Hello world!');
   toast.success('Hello world!');
@@ -24,10 +25,10 @@ const loading = () => {
       <v-btn @click="loading">
         Loading...
       </v-btn>
-
       <v-btn @click="notify">
         Toast
       </v-btn>
+
     </div>
   </div>
 

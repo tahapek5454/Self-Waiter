@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { spinnerStore } from './SpinnerState';
+import { useSpinnerStore } from '../../stores/spinnerStores/SpinnerStore';
+const spinnerStore = useSpinnerStore();
 </script>
 
 
