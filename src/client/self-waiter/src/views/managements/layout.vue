@@ -46,13 +46,13 @@
 
                 <div
           :class="[
-            dealerMenu ? 'tw-w-[28rem]' : 'tw-w-16',
-            'tw-z-[1004] tw-h-20 tw-fixed tw-top-0 tw-right-0 tw-m-4 tw-rounded-bl-3xl tw-bg-white tw-shadow-lg tw-flex  tw-items-center tw-transition-all tw-duration-300 tw-ease-in-out'
+            dealerMenu ? 'tw-w-[18rem] md:tw-w-[28rem]' : 'tw-w-16',
+            'tw-z-[1004] tw-h-[4.1rem] md:tw-h-20 tw-fixed tw-top-0 tw-right-0 tw-m-4 tw-rounded-bl-3xl tw-bg-white tw-shadow-lg tw-flex  tw-items-center tw-transition-all tw-duration-300 tw-ease-in-out'
           ]">
           
           <!-- Combobox kısmı -->
           <transition name="slide-fade">
-            <div v-if="dealerMenu" class="tw-w-80 tw-ml-4">
+            <div v-if="dealerMenu" class="tw-w-[14rem] md:tw-w-80 tw-ml-4">
               <v-combobox 
                 label="Şubeler"
                 :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
@@ -60,7 +60,7 @@
             </div>
           </transition>
           
-          <span class="material-symbols-outlined tw-cursor-pointer tw-right-0 tw-absolute tw-mr-4 !tw-text-3xl" @click="dealerMenu = !dealerMenu">
+          <span class="material-symbols-outlined tw-cursor-pointer tw-right-0 tw-absolute tw-mr-4 md:!tw-text-3xl" @click="dealerMenu = !dealerMenu">
             menu
           </span>
         </div>
